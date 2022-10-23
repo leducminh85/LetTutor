@@ -73,10 +73,10 @@ const LoginView = ({ navigation }) => {
                             <Text style={styles.filterTitleText}>Gia sư được đề xuất</Text>
                         </View>
                         <View>
-                            <TeacherCard></TeacherCard>
-                            <TeacherCard></TeacherCard>
-                            <TeacherCard></TeacherCard>
-                            <TeacherCard></TeacherCard>
+                            <TeacherCard navigation={navigation}></TeacherCard>
+                            <TeacherCard navigation={navigation}></TeacherCard>
+                            <TeacherCard navigation={navigation}></TeacherCard>
+                            <TeacherCard navigation={navigation}></TeacherCard>
 
                         </View>
 

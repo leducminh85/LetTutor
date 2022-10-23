@@ -10,7 +10,7 @@ import France from '../../../assets/img/flag/France.png'
 import Vote from './Vote'
 import FilterTag from './FilterTag'
 
-const TeacherCard = ({ title }) => {
+const TeacherCard = ({ navigation }) => {
     const [choosen, setChoosen] = useState(false);
     return (
         <View style={styles.container}>
@@ -18,7 +18,9 @@ const TeacherCard = ({ title }) => {
                 <View style={styles.teacherInfor}>
                     <Image style={styles.avatar} source={avatar} resizeMode='contain'></Image>
                     <View style={styles.teacherInforDetail}>
-                        <Text style={styles.teacherName}>Keegan</Text>
+                        <TouchableOpacity onPress={()=>navigation.navigate('teacherDetail')}>
+                            <Text style={styles.teacherName}>Keegan</Text>
+                        </TouchableOpacity>
                         <View style={styles.country}>
                             <Image style={styles.flag} source={France} resizeMode='contain'></Image>
                             <Text>Franch</Text>
@@ -127,12 +129,12 @@ const styles = StyleSheet.create({
         marginVertical: 10,
 
     },
-    
-    calendarIcon:{
+
+    calendarIcon: {
         height: 20,
         width: 20
     },
-    bookTeacherText:{
+    bookTeacherText: {
         color: '#0071F0',
         alignSelf: "center",
         padding: 10

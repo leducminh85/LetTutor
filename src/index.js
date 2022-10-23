@@ -6,6 +6,7 @@ import Register from './component/Register'
 import ForgotPassword from './component/ForgotPassword'
 import Profile from './component/Profile'
 import Home from './component/Home'
+import TeacherDetail from './component/TeacherDetail'
 
 const styles = StyleSheet.create({
   container: {
@@ -24,11 +25,12 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
+      <Stack.Screen options={{ headerShown: false }} name="login" component={Login} />
       <Stack.Screen options={{ headerShown: false }} name="home" component={Home} />
-        {/* <Stack.Screen options={{ headerShown: false }} name="login" component={Login} />
         <Stack.Screen options={{ headerShown: false }} name="register" component={Register} />
         <Stack.Screen options={{ headerShown: false }} name="profile" component={Profile} />
-        <Stack.Screen options={{ headerShown: false }} name="forgotPassword" component={ForgotPassword} /> */}
+        <Stack.Screen options={{ headerShown: false }} name="forgotPassword" component={ForgotPassword} />
+        <Stack.Screen options={{ headerShown: false }} name="teacherDetail" component={TeacherDetail} />
 
       </Stack.Navigator>
     </NavigationContainer>

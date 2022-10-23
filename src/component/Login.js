@@ -31,7 +31,7 @@ const LoginView = ({navigation}) => {
                                 <Text style={styles.forgotPassText}> Quên mật khẩu? </Text>
                             </TouchableOpacity>
 
-                            <TouchableOpacity style={styles.loginButton}>
+                            <TouchableOpacity style={styles.loginButton} onPress={()=>navigation.navigate('home')}>
                                 <Text style={styles.loginButtonText}> ĐĂNG NHẬP </Text>
                             </TouchableOpacity>
                         </View>
