@@ -10,13 +10,13 @@ const LoginView = ({ navigation }) => {
     const [showAccountInfor, setShowAccountInfor] = useState(false);
 
     return (
-        <ScrollView style={styles.container}>
+        <View style={styles.container}>
             <View style={styles.header}>
                 <Image style={styles.logo} source={logo} resizeMode='contain'></Image>
                 <Image style={styles.listIcon} source={list} resizeMode='contain'></Image>
             </View>
 
-            <View style={styles.content}>
+            <ScrollView style={styles.content}>
                 <View style={styles.avatarArea}>
                     <Image style={styles.avatar} source={avatar} resizeMode='contain'></Image>
                     <View style={styles.infor}>
@@ -78,8 +78,8 @@ const LoginView = ({ navigation }) => {
                     </View>
                     }
                 </View>
-            </View>
-        </ScrollView>
+            </ScrollView>
+        </View>
     );
 }
 
