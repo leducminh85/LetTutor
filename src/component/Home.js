@@ -3,6 +3,7 @@ import { Image, StyleSheet, Text, SafeAreaView, View, TouchableOpacity, ScrollVi
 
 import FilterTag from "./element/FilterTag";
 import TeacherCard from "./element/TeacherCard";
+import list from '../../assets/img/list.png'
 
 import logo from '../../assets/img/logo.png'
 
@@ -12,6 +13,8 @@ const LoginView = ({ navigation }) => {
         <View style={styles.container}>
             <View style={styles.header}>
                 <Image style={styles.logo} source={logo} resizeMode='contain'></Image>
+                <Image style={styles.listIcon} source={list} resizeMode='contain'></Image>
+
             </View>
             <ScrollView>
                 <View style={styles.notification}>
@@ -71,6 +74,10 @@ const LoginView = ({ navigation }) => {
                         </View>
                         <View>
                             <TeacherCard></TeacherCard>
+                            <TeacherCard></TeacherCard>
+                            <TeacherCard></TeacherCard>
+                            <TeacherCard></TeacherCard>
+
                         </View>
 
                     </View>
@@ -106,6 +113,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5,
+        justifyContent: 'space-between'
     },
     logo: {
         width: '50%',
@@ -199,6 +207,11 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         width: '50%',
         marginVertical: 10
+    },
+    listIcon: {
+        height: 20,
+        width: 20,
+
     },
 
 }

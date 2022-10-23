@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Image, StyleSheet, Text, SafeAreaView, View, TouchableOpacity, ScrollView, TextInput } from 'react-native';
 
-const FilterTag = ({title}) => {
-    const [choosen, setChoosen] = useState(false);
+const FilterTag = ({title, state, handleTouch}) => {
+    const [choosen, setChoosen] = useState(state === undefined? false: state);
     return (
-            <TouchableOpacity style={[styles.fastFilterTag, choosen? styles.choosenTag: styles.unChoosenTag]} onPress={() => setChoosen(!choosen)}>
+            <TouchableOpacity style={[styles.fastFilterTag, choosen? styles.choosenTag: styles.unChoosenTag]} onPress={ () => (handleTouch === undefined) && setChoosen(!choosen)}>
                 <Text style={choosen? styles.choosenTagText: styles.unChoosenTagText}>{title}</Text>
             </TouchableOpacity>
     )
