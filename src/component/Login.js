@@ -27,7 +27,7 @@ const LoginView = ({navigation}) => {
                             <TextInput style={styles.input} name="email" label="ĐỊA CHỈ EMAIL " />
                             <TextInput style={styles.input} name="password" label="MẬT KHẨU " secureTextEntry={passwordVisible}
                                 right={<TextInput.Icon name={passwordVisible ? "eye" : "eye-off"} onPress={() => setPasswordVisible(!passwordVisible)} />} />
-                            <TouchableOpacity style={styles.forgotPass}>
+                            <TouchableOpacity style={styles.forgotPass} onPress={()=>navigation.navigate('forgotPassword')}>
                                 <Text style={styles.forgotPassText}> Quên mật khẩu? </Text>
                             </TouchableOpacity>
 
