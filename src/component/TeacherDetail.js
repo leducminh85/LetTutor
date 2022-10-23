@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Image, StyleSheet, Text, SafeAreaView, View, TouchableOpacity, ScrollView, TextInput } from 'react-native';
-// import Video from 'react-native-video';
+import { Image, StyleSheet, Text, SafeAreaView, View, TouchableOpacity, ScrollView, TextInput,TouchableWithoutFeedback } from 'react-native';
+import { Audio, Video } from 'expo-av';
 
 import Vote from './element/Vote'
+import FilterTag from "./element/FilterTag";
 
 import list from '../../assets/img/list.png'
 import logo from '../../assets/img/logo.png'
@@ -18,57 +19,97 @@ const LoginView = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.header}>
+            <TouchableOpacity  style={styles.header} onPress={()=> navigation.navigate('home')}>
                 <Image style={styles.logo} source={logo} resizeMode='contain'></Image>
                 <Image style={styles.listIcon} source={list} resizeMode='contain'></Image>
-            </View>
-            <ScrollView style={styles.content}>
-                <View style={styles.teacherInfor}>
+            </TouchableOpacity >
+
+
+            <ScrollView>
+                <View style={styles.content}>
                     <View style={styles.teacherInfor}>
-                        <Image style={styles.avatar} source={avatar} resizeMode='contain'></Image>
-                        <View style={styles.teacherInforDetail}>
-                            <TouchableOpacity onPress={() => navigation.navigate('teacherDetail')}>
-                                <Text style={styles.teacherName}>Keegan</Text>
-                            </TouchableOpacity>
-                            <View style={styles.country}>
-                                <Image style={styles.flag} source={France} resizeMode='contain'></Image>
-                                <Text>Franch</Text>
+                        <View style={styles.teacherInfor}>
+                            <Image style={styles.avatar} source={avatar} resizeMode='contain'></Image>
+                            <View style={styles.teacherInforDetail}>
+                                <TouchableOpacity onPress={() => navigation.navigate('teacherDetail')}>
+                                    <Text style={styles.teacherName}>Keegan</Text>
+                                </TouchableOpacity>
+                                <View style={styles.country}>
+                                    <Image style={styles.flag} source={France} resizeMode='contain'></Image>
+                                    <Text>Franch</Text>
+                                </View>
+                                <View style={styles.rateTeacher}>
+                                    <Vote />
+                                    <Text style={styles.numRate}>(10)</Text>
+                                </View>
                             </View>
-                            <View style={styles.rateTeacher}>
-                                <Vote />
-                                <Text style={styles.numRate}>(10)</Text>
-                            </View>
+                        </View>
+
+                    </View>
+
+                    <Text style={styles.text}>I am passionate about running and fitness,
+                        I often compete in trail/mountain running events and I love pushing myself.
+                        I am training to one day take part in ultra-endurance events.
+                        I also enjoy watching rugby on the weekends, reading and watching podcasts on Youtube.
+                        My most memorable life experience would be living in and traveling around Southeast Asia.
+                    </Text>
+
+                    <View style={styles.functionButton}>
+                        <TouchableOpacity style={styles.functionGroup}>
+                            <Image style={styles.favouriteIcon} source={heart} resizeMode='contain'></Image>
+                            <Text style={styles.functionText}>Yêu thích</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.functionGroup}>
+                            <Image style={styles.favouriteIcon} source={warning} resizeMode='contain'></Image>
+                            <Text style={styles.functionText}>Báo cáo</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.functionGroup}>
+                            <Image style={styles.favouriteIcon} source={starUnactive} resizeMode='contain'></Image>
+                            <Text style={styles.functionText}>Đánh giá</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.videoFrame}>
+                        <Video
+                            source={video}
+                            useNativeControls
+                            resizeMode="contain"
+                            isLooping
+                            style={styles.videoStyle}
+                        />
+                    </View>
+                    <View style={styles.skillTags}>
+                        <Text style={styles.title}>Ngôn ngữ</Text>
+                        <View style={styles.tags}>
+                            <FilterTag title='Tiếng anh' state={true} handleTouch={true} />
                         </View>
                     </View>
 
+                    <View style={styles.skillTags}>
+                        <Text style={styles.title}>Chuyên ngành</Text>
+                        <View style={styles.tags}>
+                            <FilterTag title='Tiếng anh cho công việc' state={true} handleTouch={true} />
+                            <FilterTag title='Giao tiếp' state={true} handleTouch={true} />
+                            <FilterTag title='Tiếng anh cho trẻ' state={true} handleTouch={true} />
+                            <FilterTag title='IELTS' state={true} handleTouch={true} />
+                            <FilterTag title='TOEIC' state={true} handleTouch={true} />
+                            <FilterTag title='KET' state={true} handleTouch={true} />
+                            <FilterTag title='PET' state={true} handleTouch={true} />
+                            <FilterTag title='STARTER' state={true} handleTouch={true} />
+                            <FilterTag title='IELTS' state={true} handleTouch={true} />
+                            <FilterTag title='TOEIC' state={true} handleTouch={true} />
+                        </View>
+                    </View>
+
+                    <View style={styles.skill}>
+                        <Text style={styles.title}>Sở thích</Text>
+                        <Text style={styles.text}>I am a fun, talkative person who loves to find out about others cultures and experience.</Text>
+                    </View>
+
+                    <View style={styles.skill}>
+                        <Text style={styles.title}>Kinh nghiệm giảng dạy</Text>
+                        <Text style={styles.text}>Acadsoc - English Language Instruction Chinese based online English teaching platform. I taught EILTS as well as a wide age range of Children and adults of all levels. Sincewin - English Language Instruction Online English lessons for whole kindergarten classes. I taught basic phonics and vocabulary using songs, TPR and puppets</Text>
+                    </View>
                 </View>
-
-                <Text style={styles.text}>I am passionate about running and fitness,
-                    I often compete in trail/mountain running events and I love pushing myself.
-                    I am training to one day take part in ultra-endurance events.
-                    I also enjoy watching rugby on the weekends, reading and watching podcasts on Youtube.
-                    My most memorable life experience would be living in and traveling around Southeast Asia.
-                </Text>
-
-                <View style={styles.functionButton}>
-                    <TouchableOpacity style={styles.functionGroup}>
-                        <Image style={styles.favouriteIcon} source={heart} resizeMode='contain'></Image>
-                        <Text style={styles.functionText}>Yêu thích</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.functionGroup}>
-                        <Image style={styles.favouriteIcon} source={warning} resizeMode='contain'></Image>
-                        <Text style={styles.functionText}>Báo cáo</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.functionGroup}>
-                        <Image style={styles.favouriteIcon} source={starUnactive} resizeMode='contain'></Image>
-                        <Text style={styles.functionText}>Đánh giá</Text>
-                    </TouchableOpacity>
-                </View>
-
-                {/* <Video
-                    source={require('../../assets/video/video.mp4')}
-                    style={styles.videoStyle}
-                /> */}
             </ScrollView>
 
 
@@ -171,12 +212,32 @@ const styles = StyleSheet.create({
         color: '#0071F0'
     },
     videoStyle: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0,
+        flex: 1,
+        margin: 0,
+        height: 200,
+        width: '100%',
     },
+    videoFrame: {
+        flex: 1,
+        marginVertical: 20
+    },
+    title: {
+        fontSize: 20,
+        fontWeight: 'bold'
+    },
+    tags: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+
+        marginVertical: 10,
+        marginRight: 10,
+    },
+    skill:{
+        marginVertical: 10,
+    },
+    touchOnLogo:{
+        flex:1,
+    }
 }
 
 

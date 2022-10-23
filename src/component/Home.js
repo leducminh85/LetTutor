@@ -8,13 +8,13 @@ import list from '../../assets/img/list.png'
 import logo from '../../assets/img/logo.png'
 
 const LoginView = ({ navigation }) => {
-
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <Image style={styles.logo} source={logo} resizeMode='contain'></Image>
+                <TouchableOpacity style={{ flexDirection: "row", }}>
+                    <Image style={styles.logo} source={logo} resizeMode='contain' ></Image>
+                </TouchableOpacity>
                 <Image style={styles.listIcon} source={list} resizeMode='contain'></Image>
-
             </View>
             <ScrollView>
                 <View style={styles.notification}>
@@ -85,7 +85,7 @@ const LoginView = ({ navigation }) => {
             </ScrollView>
 
 
-        </View>
+        </View >
     );
 }
 
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     logo: {
-        width: '50%',
+        width: '75%',
     },
     notification: {
         backgroundColor: '#0071F0',
