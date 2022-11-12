@@ -1,2 +1,1 @@
-# LetTutor
-Ứng dụng gia sư trực tuyến
+# LetTutor - Ứng dụng gia sư trực tuyến
