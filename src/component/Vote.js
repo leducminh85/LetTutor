@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Image, StyleSheet, Text, SafeAreaView, View, TouchableOpacity, ScrollView, TextInput } from 'react-native';
 
-import star from '../../../assets/img/star.png'
+import star from '../../assets/img/star.png'
 const Vote = ({title}) => {
     const [choosen, setChoosen] = useState(false);
     return (

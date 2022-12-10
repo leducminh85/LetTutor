@@ -2,28 +2,25 @@ import React, { useState } from "react";
 import { Image, StyleSheet, Text, SafeAreaView, View, TouchableOpacity, ScrollView, TextInput,TouchableWithoutFeedback } from 'react-native';
 import { Audio, Video } from 'expo-av';
 
-import Vote from './element/Vote'
-import FilterTag from "./element/FilterTag";
+import Vote from '../../component/Vote'
+import FilterTag from "../../component/FilterTag";
+import Header  from "../../component/Header";
 
-import list from '../../assets/img/list.png'
-import logo from '../../assets/img/logo.png'
-import avatar from '../../assets/img/avatar.jpg'
-import heart from '../../assets/img/heart.png'
-import France from '../../assets/img/flag/France.png'
-import warning from '../../assets/img/warning.png'
-import starUnactive from '../../assets/img/starUnactive.png'
+import list from '../../../assets/img/list.png'
+import logo from '../../../assets/img/logo.png'
+import avatar from '../../../assets/img/avatar.jpg'
+import heart from '../../../assets/img/heart.png'
+import France from '../../../assets/img/flag/France.png'
+import warning from '../../../assets/img/warning.png'
+import starUnactive from '../../../assets/img/starUnactive.png'
 
-import video from '../../assets/video/video.mp4'
+import video from '../../../assets/video/video.mp4'
 
 const LoginView = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity  style={styles.header} onPress={()=> navigation.navigate('home')}>
-                <Image style={styles.logo} source={logo} resizeMode='contain'></Image>
-                <Image style={styles.listIcon} source={list} resizeMode='contain'></Image>
-            </TouchableOpacity >
-
+            <Header/>
 
             <ScrollView>
                 <View style={styles.content}>

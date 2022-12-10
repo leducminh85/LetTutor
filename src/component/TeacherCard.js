@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Image, StyleSheet, Text, SafeAreaView, View, TouchableOpacity, ScrollView, TextInput } from 'react-native';
 
-import avatar from '../../../assets/img/avatar.jpg'
-import heart from '../../../assets/img/heart.png'
-import calendar from '../../../assets/img/calendar.png'
+import avatar from '../../assets/img/avatar.jpg'
+import heart from '../../assets/img/heart.png'
+import calendar from '../../assets/img/calendar.png'
 
-import France from '../../../assets/img/flag/France.png'
+import France from '../../assets/img/flag/France.png'
 
 import Vote from './Vote'
 import FilterTag from './FilterTag'

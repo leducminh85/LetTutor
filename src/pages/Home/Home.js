@@ -1,21 +1,13 @@
 import React, { useState } from "react";
 import { Image, StyleSheet, Text, SafeAreaView, View, TouchableOpacity, ScrollView, TextInput } from 'react-native';
 
-import FilterTag from "./element/FilterTag";
-import TeacherCard from "./element/TeacherCard";
-import list from '../../assets/img/list.png'
-
-import logo from '../../assets/img/logo.png'
-
+import FilterTag from "../../component/FilterTag";
+import TeacherCard from "../../component/TeacherCard";
+import Header from "../../component/Header";
 const LoginView = ({ navigation }) => {
     return (
         <View style={styles.container}>
-            <View style={styles.header}>
-                <TouchableOpacity style={{ flexDirection: "row", }}>
-                    <Image style={styles.logo} source={logo} resizeMode='contain' ></Image>
-                </TouchableOpacity>
-                <Image style={styles.listIcon} source={list} resizeMode='contain'></Image>
-            </View>
+            <Header navigation={navigation}/>
             <ScrollView>
                 <View style={styles.notification}>
                     <View style={styles.notiTitle}>
@@ -99,25 +91,7 @@ const styles = StyleSheet.create({
         fontSize: 25,
         fontWeight: '500',
     },
-    header: {
-        height: 80,
-        flexDirection: "row",
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        padding: 20,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
-        justifyContent: 'space-between'
-    },
-    logo: {
-        width: '75%',
-    },
+    
     notification: {
         backgroundColor: '#0071F0',
         padding: 30,
@@ -208,11 +182,7 @@ const styles = StyleSheet.create({
         width: '50%',
         marginVertical: 10
     },
-    listIcon: {
-        height: 20,
-        width: 20,
-
-    },
+   
 
 }
 

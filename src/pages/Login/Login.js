@@ -1,19 +1,15 @@
 import React, { useState } from "react";
-import { AppBar } from "@react-native-material/core";
 import { Image, StyleSheet, Text, SafeAreaView, View, TouchableOpacity } from 'react-native';
-import { Header } from "react-native/Libraries/NewAppScreen";
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import { TextInput } from 'react-native-paper';
 
-import logo from '../../assets/img/logo.png'
-import facebookLogo from '../../assets/img/facebookLogo.png'
-import googleLogo from '../../assets/img/googleLogo.png'
-import mobileLogo from '../../assets/img/mobileLogo.png'
+import logo from '../../../assets/img/logo.png'
+import facebookLogo from '../../../assets/img/facebookLogo.png'
+import googleLogo from '../../../assets/img/googleLogo.png'
+import mobileLogo from '../../../assets/img/mobileLogo.png'
 
-const RegisterView = ({navigation}) => {
+const LoginView = ({navigation}) => {
 
     const [passwordVisible, setPasswordVisible] = useState(true);
-    const [passwordCheckVisible, setPasswordCheckVisible] = useState(true);
 
     return (
         <View style={styles.container}>
@@ -23,20 +19,20 @@ const RegisterView = ({navigation}) => {
 
             <View style={styles.authentication}>
                 <View style={styles.content}>
-                    <Text style={styles.titleText}> Đăng ký </Text>
-                    <View style={styles.registerArea}>
+                    <Text style={styles.loginText}> Đăng nhập </Text>
+                    <View style={styles.loginArea}>
                         <Text style={styles.textIntro}> Phát triển kỹ năng tiếng Anh nhanh nhất bằng cách
                             học 1 kèm 1 trực tuyến theo mục tiêu và lộ trình dành cho riêng bạn</Text>
-                        <View style={styles.formRegister}>
+                        <View style={styles.formLogin}>
                             <TextInput style={styles.input} name="email" label="ĐỊA CHỈ EMAIL " />
                             <TextInput style={styles.input} name="password" label="MẬT KHẨU " secureTextEntry={passwordVisible}
                                 right={<TextInput.Icon name={passwordVisible ? "eye" : "eye-off"} onPress={() => setPasswordVisible(!passwordVisible)} />} />
-                            <TextInput style={styles.input} name="passwordCheck" label="XÁC NHẬN MẬT KHẨU " secureTextEntry={passwordCheckVisible}
-                                right={<TextInput.Icon name={passwordCheckVisible ? "eye" : "eye-off"} onPress={() => setPasswordCheckVisible(!passwordCheckVisible)} />} />
+                            <TouchableOpacity style={styles.forgotPass} onPress={()=>navigation.navigate('forgotPassword')}>
+                                <Text style={styles.forgotPassText}> Quên mật khẩu? </Text>
+                            </TouchableOpacity>
 
-
-                            <TouchableOpacity style={styles.registerButton}>
-                                <Text style={styles.registerButtonText}> ĐĂNG NHẬP </Text>
+                            <TouchableOpacity style={styles.loginButton} onPress={()=>navigation.navigate('home')}>
+                                <Text style={styles.loginButtonText}> ĐĂNG NHẬP </Text>
                             </TouchableOpacity>
                         </View>
 
@@ -53,10 +49,10 @@ const RegisterView = ({navigation}) => {
                                     <Image style={[styles.otherLoginIcon]} source={mobileLogo} resizeMode='contain' />
                                 </TouchableOpacity>
                             </View>
-                            <View style={styles.loginText}>
-                                <Text>Đã có tài khoản? </Text>
-                                <TouchableOpacity onPress={()=>navigation.navigate('login')}>
-                                    <Text style={styles.linkText}>Đăng nhập</Text>
+                            <View style={styles.registerText}>
+                                <Text >Chưa có tài khoản? </Text>
+                                <TouchableOpacity onPress={()=> navigation.navigate('register')}>
+                                    <Text style={styles.forgotPassText}>Đăng ký</Text>
                                 </TouchableOpacity>
                             </View>
 
@@ -103,13 +99,13 @@ const styles = StyleSheet.create({
     content: {
         height: '100%'
     },
-    titleText: {
+    loginText: {
         fontSize: 30,
         fontWeight: 'bold',
         color: '#0071F0',
         alignSelf: 'center'
     },
-    registerArea: {
+    loginArea: {
         padding: 20,
         flexDirection: 'column',
     },
@@ -120,7 +116,7 @@ const styles = StyleSheet.create({
 
     },
 
-    formRegister: {
+    formLogin: {
         flexDirection: 'column',
         paddingVertical: 20,
     },
@@ -140,10 +136,10 @@ const styles = StyleSheet.create({
     forgotPass: {
         marginVertical: 20
     },
-    linkText: {
+    forgotPassText: {
         color: '#0071F0'
     },
-    registerButton: {
+    loginButton: {
         alignItems: 'center',
         justifyContent: 'center',
         width: '100%',
@@ -157,10 +153,9 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 2,
-        borderRadius: 5,
-        marginTop: 10
+        borderRadius: 5
     },
-    registerButtonText: {
+    loginButtonText: {
         color: 'white',
         alignSelf: "center",
         fontSize: 15,
@@ -192,7 +187,7 @@ const styles = StyleSheet.create({
         borderColor: '#0071F0',
         alignItems: 'center'
     },
-    loginText: {
+    registerText: {
         flexDirection: 'row',
         alignSelf: 'center'
     }
@@ -202,4 +197,4 @@ const styles = StyleSheet.create({
 
 );
 
-export default RegisterView;
+export default LoginView;

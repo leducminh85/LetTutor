@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Image, StyleSheet, Text, SafeAreaView, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 
-import logo from '../../assets/img/logo.png'
-import list from '../../assets/img/list.png'
-import avatar from '../../assets/img/avatar.jpg'
+import logo from '../../../assets/img/logo.png'
+import list from '../../../assets/img/list.png'
+import avatar from '../../../assets/img/avatar.jpg'
 
 const LoginView = ({ navigation }) => {
 

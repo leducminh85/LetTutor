@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { Image, StyleSheet, Text, SafeAreaView, View, TouchableOpacity } from 'react-native';
 import { TextInput } from 'react-native-paper';
 
-import logo from '../../assets/img/logo.png'
-import facebookLogo from '../../assets/img/facebookLogo.png'
-import googleLogo from '../../assets/img/googleLogo.png'
-import mobileLogo from '../../assets/img/mobileLogo.png'
+import logo from '../../../assets/img/logo.png'
+import facebookLogo from '../../../assets/img/facebookLogo.png'
+import googleLogo from '../../../assets/img/googleLogo.png'
+import mobileLogo from '../../../assets/img/mobileLogo.png'
 
 const LoginView = ({ navigation }) => {
 
