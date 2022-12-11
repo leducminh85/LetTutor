@@ -7,7 +7,7 @@ import facebookLogo from '../../../assets/img/facebookLogo.png'
 import googleLogo from '../../../assets/img/googleLogo.png'
 import mobileLogo from '../../../assets/img/mobileLogo.png'
 
-const LoginView = ({ navigation }) => {
+const ForgotPassword = ({ navigation }) => {
 
     const [passwordVisible, setPasswordVisible] = useState(true);
 
@@ -125,4 +125,4 @@ const styles = StyleSheet.create({
 }
 );
 
-export default LoginView;
+export default ForgotPassword;

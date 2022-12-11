@@ -4,10 +4,10 @@ import { Image, StyleSheet, Text, SafeAreaView, View, TouchableOpacity, ScrollVi
 import FilterTag from "../../component/FilterTag";
 import TeacherCard from "../../component/TeacherCard";
 import Header from "../../component/Header";
-const LoginView = ({ navigation }) => {
+const Home = ({ navigation }) => {
     return (
         <View style={styles.container}>
-            <Header navigation={navigation}/>
+            <Header navigation={navigation} page={'home'}/>
             <ScrollView>
                 <View style={styles.notification}>
                     <View style={styles.notiTitle}>
@@ -190,4 +190,4 @@ const styles = StyleSheet.create({
 
 );
 
-export default LoginView;
+export default Home;

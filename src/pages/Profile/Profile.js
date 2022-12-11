@@ -1,20 +1,18 @@
 import React, { useState } from "react";
 import { Image, StyleSheet, Text, SafeAreaView, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 
+import Header from "../../component/Header";
 import logo from '../../../assets/img/logo.png'
 import list from '../../../assets/img/list.png'
 import avatar from '../../../assets/img/avatar.jpg'
 
-const LoginView = ({ navigation }) => {
+const Profile = ({ navigation }) => {
 
-    const [showAccountInfor, setShowAccountInfor] = useState(false);
+    const [showAccountInfor, setShowAccountInfor] = useState(true);
 
     return (
         <View style={styles.container}>
-            <View style={styles.header}>
-                <Image style={styles.logo} source={logo} resizeMode='contain'></Image>
-                <Image style={styles.listIcon} source={list} resizeMode='contain'></Image>
-            </View>
+            <Header navigation={navigation}></Header>
 
             <ScrollView style={styles.content}>
                 <View style={styles.avatarArea}>
@@ -219,4 +217,4 @@ const styles = StyleSheet.create({
 
 );
 
-export default LoginView;
+export default Profile;

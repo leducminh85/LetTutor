@@ -1,16 +1,19 @@
 import list from '../../assets/img/list.png'
 import logo from '../../assets/img/logo.png'
 import { StyleSheet, TouchableOpacity, Image, View } from 'react-native'
-export default function Header({ navigation }) {
+export default function Header({ navigation, page }) {
 
     return (
         <View style={styles.header}>
-            <TouchableOpacity style={{ flexDirection: "row", }}>
+            <TouchableOpacity onPress={() => navigation.navigate('home')} style={{ flexDirection: "row", }}>
                 <Image style={styles.logo} source={logo} resizeMode='contain' ></Image>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('menu')}>
-                <Image style={styles.listIcon} source={list}  resizeMode='contain'></Image>
-            </TouchableOpacity>
+            {page === 'home' &&
+                <TouchableOpacity onPress={() => navigation.navigate('menu')}>
+                    <Image style={styles.listIcon} source={list} resizeMode='contain'></Image>
+                </TouchableOpacity>
+            }
+
         </View>
     )
 }
