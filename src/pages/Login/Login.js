@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Image, StyleSheet, Text, SafeAreaView, View, TouchableOpacity } from 'react-native';
+import { Image, StyleSheet, Text, SafeAreaView, View, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { TextInput } from 'react-native-paper';
 
 import logo from '../../../assets/img/logo.png'
@@ -7,9 +7,63 @@ import facebookLogo from '../../../assets/img/facebookLogo.png'
 import googleLogo from '../../../assets/img/googleLogo.png'
 import mobileLogo from '../../../assets/img/mobileLogo.png'
 
-const LoginView = ({navigation}) => {
+import Login from "../../Services/Login";
+// import { AuthContext } from "../Context/AuthContext";
 
+import { useEffect } from "react";
+const LoginView = ({ navigation }) => {
+    const [emailError, setemailError] = useState('');
+    const [loginError, setloginError] = useState('');
+    const [passwordError, setPasswordError] = useState('');
+
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const [loginState, setLoginState] = useState();
     const [passwordVisible, setPasswordVisible] = useState(true);
+
+    // const {isLoading, userToken} = useContext(AuthContext);
+
+    async function loginForm() {
+        setemailError('')
+        setPasswordError('')
+        setloginError('')
+
+        console.log(email, password)
+        if (email === '') 
+            setemailError('Email không được để trống')
+        if (password === '')
+            setPasswordError('Mật khẩu không được để trống')
+        if (email && password) {
+            (Login(email, password, setLoginState))
+        }
+    }
+
+    useEffect(() => {
+        
+        //   console.log(loginState)
+        if (loginState !== undefined) {
+            if (loginState.data == undefined)
+                setloginError('Tài khoản hoặc mật khẩu không đúng')
+            else {  
+                navigation.navigate('home')
+            }
+        }
+    }, [loginState]);
+
+    
+    // useEffect(() => {
+    //    if (userToken !== null)
+    //     navigation.navigate('home')
+    // }, []);
+
+    // if (isLoading){
+    //     return (
+    //         <View>
+    //             <ActivityIndicator size={'large'}></ActivityIndicator>
+    //         </View>
+    //     )
+    // }
 
     return (
         <View style={styles.container}>
@@ -24,16 +78,22 @@ const LoginView = ({navigation}) => {
                         <Text style={styles.textIntro}> Phát triển kỹ năng tiếng Anh nhanh nhất bằng cách
                             học 1 kèm 1 trực tuyến theo mục tiêu và lộ trình dành cho riêng bạn</Text>
                         <View style={styles.formLogin}>
-                            <TextInput style={styles.input} name="email" label="ĐỊA CHỈ EMAIL " />
-                            <TextInput style={styles.input} name="password" label="MẬT KHẨU " secureTextEntry={passwordVisible}
+                            <TextInput style={styles.input} value={email} onChangeText={setEmail} name="email" label="ĐỊA CHỈ EMAIL " />
+                            <Text style={styles.error}>{emailError}</Text>
+
+                            <TextInput style={styles.input} value={password} onChangeText={setPassword} name="password" label="MẬT KHẨU " secureTextEntry={passwordVisible}
                                 right={<TextInput.Icon name={passwordVisible ? "eye" : "eye-off"} onPress={() => setPasswordVisible(!passwordVisible)} />} />
-                            <TouchableOpacity style={styles.forgotPass} onPress={()=>navigation.navigate('forgotPassword')}>
+                            <Text style={styles.error}>{passwordError}</Text>
+
+                            <TouchableOpacity style={styles.forgotPass} onPress={() => navigation.navigate('forgotPassword')}>
                                 <Text style={styles.forgotPassText}> Quên mật khẩu? </Text>
                             </TouchableOpacity>
 
-                            <TouchableOpacity style={styles.loginButton} onPress={()=>navigation.navigate('home')}>
+                            <TouchableOpacity style={styles.loginButton} onPress={loginForm}>
                                 <Text style={styles.loginButtonText}> ĐĂNG NHẬP </Text>
                             </TouchableOpacity>
+                            <Text style={styles.error}>{loginError}</Text>
+
                         </View>
 
                         <View style={styles.otherLogin}>
@@ -51,7 +111,7 @@ const LoginView = ({navigation}) => {
                             </View>
                             <View style={styles.registerText}>
                                 <Text >Chưa có tài khoản? </Text>
-                                <TouchableOpacity onPress={()=> navigation.navigate('register')}>
+                                <TouchableOpacity onPress={() => navigation.navigate('register')}>
                                     <Text style={styles.forgotPassText}>Đăng ký</Text>
                                 </TouchableOpacity>
                             </View>
@@ -70,6 +130,9 @@ const styles = StyleSheet.create({
         flex: 1,
         marginTop: 50,
         backgroundColor: 'white'
+    },
+    error: {
+        color: "red",
     },
     text: {
         fontSize: 25,

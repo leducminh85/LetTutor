@@ -8,7 +8,6 @@ import Profile from './pages/Profile/Profile'
 import Home from './pages/Home/Home'
 import TeacherDetail from './pages/TeacherDetail/TeacherDetail'
 import MenuList from './pages/MenuList/MenuList'
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -24,18 +23,18 @@ const Stack = createNativeStackNavigator();
 
 function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen options={{ headerShown: false }} name="login" component={Login} />
-        <Stack.Screen options={{ headerShown: false }} name="home" component={Home} />
-        <Stack.Screen options={{ headerShown: false }} name="register" component={Register} />
-        <Stack.Screen options={{ headerShown: false }} name="profile" component={Profile} />
-        <Stack.Screen options={{ headerShown: false }} name="forgotPassword" component={ForgotPassword} />
-        <Stack.Screen options={{ headerShown: false }} name="teacherDetail" component={TeacherDetail} />
-        <Stack.Screen options={{ headerShown: false }} name="menu" component={MenuList} />
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Home">
+          <Stack.Screen options={{ headerShown: false }} name="login" component={Login} />
+          <Stack.Screen options={{ headerShown: false }} name="home" component={Home} />
+          <Stack.Screen options={{ headerShown: false }} name="register" component={Register} />
+          <Stack.Screen options={{ headerShown: false }} name="profile" component={Profile} />
+          <Stack.Screen options={{ headerShown: false }} name="forgotPassword" component={ForgotPassword} />
+          <Stack.Screen options={{ headerShown: false }} name="teacherDetail" component={TeacherDetail} />
+          <Stack.Screen options={{ headerShown: false }} name="menu" component={MenuList} />
 
-      </Stack.Navigator>
-    </NavigationContainer>
+        </Stack.Navigator>
+      </NavigationContainer>
   );
 }
 
