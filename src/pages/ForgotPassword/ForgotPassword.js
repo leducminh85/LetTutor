@@ -9,7 +9,7 @@ import mobileLogo from '../../../assets/img/mobileLogo.png'
 
 const ForgotPassword = ({ navigation }) => {
 
-    const [passwordVisible, setPasswordVisible] = useState(true);
+    const [email, setEmail] = useState('');
 
     return (
         <View style={styles.container}>
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5,
-        backgroundColor: 'black'
+        backgroundColor: 'white'
     },
     logo: {
         width: '50%',
