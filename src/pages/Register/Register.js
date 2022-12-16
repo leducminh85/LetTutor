@@ -11,6 +11,7 @@ import googleLogo from '../../../assets/img/googleLogo.png'
 import mobileLogo from '../../../assets/img/mobileLogo.png'
 
 import Register from "../../Services/Register";
+import VerifyAccount from "../../Services/VerifyAccount";
 
 const RegisterView = ({ navigation }) => {
     const [emailError, setemailError] = useState('');
@@ -56,8 +57,11 @@ const RegisterView = ({ navigation }) => {
                 if (registerState.data.message === '\"password\" length must be at least 6 characters long')
                     setPasswordError('Mật khẩu ít nhất 6 ký tự')
             
-            if (registerState.data!== null && registerState.message === undefined)
-                navigation.navigate('home')
+            if (registerState.data!== null && registerState.data.tokens === undefined)
+                {const token = registerState.data.tokens.access.token;
+                    VerifyAccount(token);
+                    navigation.navigate('home')
+                }
         }
     }, [registerState]);
 
