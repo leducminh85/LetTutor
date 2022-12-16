@@ -29,29 +29,33 @@ const LoginView = ({ navigation }) => {
         setPasswordError('')
         setloginError('')
 
-        console.log(email, password)
-        if (email === '') 
-            setemailError('Email không được để trống')
-        if (password === '')
-            setPasswordError('Mật khẩu không được để trống')
-        if (email && password) {
+        if (email === '') setemailError('Email không được để trống')
+        else {
+            let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+            if (reg.test(email) === false) setemailError('Email không đúng');
+        }
+        if (password === '') setPasswordError('Mật khẩu không được để trống')
+
+
+        if (emailError === '' && passwordError === '') {
             (Login(email, password, setLoginState))
         }
     }
 
     useEffect(() => {
-        
+
         //   console.log(loginState)
         if (loginState !== undefined) {
+            console.log(loginState)
             if (loginState.data == undefined)
                 setloginError('Tài khoản hoặc mật khẩu không đúng')
-            else {  
+            else {
                 navigation.navigate('home')
             }
         }
     }, [loginState]);
 
-    
+
     // useEffect(() => {
     //    if (userToken !== null)
     //     navigation.navigate('home')
@@ -79,11 +83,11 @@ const LoginView = ({ navigation }) => {
                             học 1 kèm 1 trực tuyến theo mục tiêu và lộ trình dành cho riêng bạn</Text>
                         <View style={styles.formLogin}>
                             <TextInput style={styles.input} value={email} onChangeText={setEmail} name="email" label="ĐỊA CHỈ EMAIL " />
-                            <Text style={styles.error}>{emailError}</Text>
+                            {emailError !== '' && <Text style={styles.error}>{emailError}</Text>}
 
                             <TextInput style={styles.input} value={password} onChangeText={setPassword} name="password" label="MẬT KHẨU " secureTextEntry={passwordVisible}
                                 right={<TextInput.Icon name={passwordVisible ? "eye" : "eye-off"} onPress={() => setPasswordVisible(!passwordVisible)} />} />
-                            <Text style={styles.error}>{passwordError}</Text>
+                            {passwordError !== '' && <Text style={styles.error}>{passwordError}</Text>}
 
                             <TouchableOpacity style={styles.forgotPass} onPress={() => navigation.navigate('forgotPassword')}>
                                 <Text style={styles.forgotPassText}> Quên mật khẩu? </Text>
@@ -92,7 +96,7 @@ const LoginView = ({ navigation }) => {
                             <TouchableOpacity style={styles.loginButton} onPress={loginForm}>
                                 <Text style={styles.loginButtonText}> ĐĂNG NHẬP </Text>
                             </TouchableOpacity>
-                            <Text style={styles.error}>{loginError}</Text>
+                            {loginError !== '' &&<Text style={styles.error}>{loginError}</Text>}
 
                         </View>
 
