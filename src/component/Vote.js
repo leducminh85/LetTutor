@@ -6,7 +6,7 @@ import star from '../../assets/img/star.png'
 const Vote = ({ title, num }) => {
     const [choosen, setChoosen] = useState(false);
     var voteResult = [];
-    for (let i = 0; i < num; i++) {
+    for (let i = 1; i < num; i++) {
         voteResult.push(
             <Image key={i} source={star} resizeMode='contain' style={styles.star}></Image>
         )

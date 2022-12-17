@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Image, StyleSheet, Text, SafeAreaView, View, TouchableOpacity, ScrollView, TextInput,TouchableWithoutFeedback } from 'react-native';
+import { Image, StyleSheet, Text, SafeAreaView, View, TouchableOpacity, ScrollView, TextInput, TouchableWithoutFeedback } from 'react-native';
 import { Audio, Video } from 'expo-av';
 
 import Vote from '../../component/Vote'
 import FilterTag from "../../component/FilterTag";
-import Header  from "../../component/Header";
+import Header from "../../component/Header";
 
 import list from '../../../assets/img/list.png'
 import logo from '../../../assets/img/logo.png'
@@ -15,102 +15,120 @@ import warning from '../../../assets/img/warning.png'
 import starUnactive from '../../../assets/img/starUnactive.png'
 
 import video from '../../../assets/video/video.mp4'
+import { useEffect, useContext } from "react";
+import { StateContext } from "../../Context/StateContext";
+import GetTutorInfo from "../../Services/GetTutorInfo";
+import { AntDesign } from '@expo/vector-icons';
 
-const LoginView = ({ navigation }) => {
+const TeacherDetail = ({ route, navigation }) => {
+    const [data, setData] = useContext(StateContext)
+    const [tutorDetailState, setTutorDetailState] = useState();
+    const { teacherId } = route.params;
+    useEffect(() => {
+        GetTutorInfo(data.access.token, teacherId, setTutorDetailState)
+    }, []);
+
+    if (tutorDetailState !== undefined) {
+        const languages = tutorDetailState.languages.split(',')
+        var listLanguage = [];
+        for (const skill in languages) {
+            listLanguage.push(
+                <FilterTag key={skill} title={languages[skill]} state={true} handleTouch={true} />
+            )
+        }
+
+        const specialties = tutorDetailState.specialties.split(',')
+        var listSkill = [];
+        for (const skill in specialties) {
+            listSkill.push(
+                <FilterTag key={skill} title={specialties[skill]} state={true} handleTouch={true} />
+            )
+        }
+    }
 
     return (
         <View style={styles.container}>
-            <Header/>
-
-            <ScrollView>
-                <View style={styles.content}>
-                    <View style={styles.teacherInfor}>
+            <Header />
+            {tutorDetailState !== undefined &&
+                <ScrollView>
+                    <View style={styles.content}>
                         <View style={styles.teacherInfor}>
-                            <Image style={styles.avatar} source={avatar} resizeMode='contain'></Image>
-                            <View style={styles.teacherInforDetail}>
-                                <TouchableOpacity onPress={() => navigation.navigate('teacherDetail')}>
-                                    <Text style={styles.teacherName}>Keegan</Text>
-                                </TouchableOpacity>
-                                <View style={styles.country}>
-                                    <Image style={styles.flag} source={France} resizeMode='contain'></Image>
-                                    <Text>Franch</Text>
+                            <View style={styles.teacherInfor}>
+                                <Image style={styles.avatar} source={tutorDetailState.User.avatar} resizeMode='contain'></Image>
+                                <View style={styles.teacherInforDetail}>
+                                    <TouchableOpacity >
+                                        <Text style={styles.teacherName}>{tutorDetailState.User.name}</Text>
+                                    </TouchableOpacity>
+                                    <View style={styles.country}>
+                                        <Image style={styles.flag} source={France} resizeMode='contain'></Image>
+                                        <Text>{tutorDetailState.User.country}</Text>
+                                    </View>
+                                    <View style={styles.rateTeacher}>
+                                        <Vote num={tutorDetailState.avgRating} />
+                                        <Text style={styles.numRate}>({tutorDetailState.totalFeedback})</Text>
+                                    </View>
                                 </View>
-                                <View style={styles.rateTeacher}>
-                                    <Vote />
-                                    <Text style={styles.numRate}>(10)</Text>
-                                </View>
+                            </View>
+
+                        </View>
+
+                        <Text style={styles.text}>{tutorDetailState.bio}</Text>
+
+                        <View style={styles.functionButton}>
+                            <TouchableOpacity style={styles.functionGroup}>
+                                {tutorDetailState.isFavorite ?
+                                    <AntDesign name="heart" size={24} color="red" /> :
+                                    <AntDesign name="hearto" size={24} color="black" />
+                                }
+                                <Text style={styles.functionText}>Yêu thích</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.functionGroup}>
+                                <Image style={styles.favouriteIcon} source={warning} resizeMode='contain'></Image>
+                                <Text style={styles.functionText}>Báo cáo</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.functionGroup}>
+                                <Image style={styles.favouriteIcon} source={starUnactive} resizeMode='contain'></Image>
+                                <Text style={styles.functionText}>Đánh giá</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.videoFrame}>
+                            <Video
+                                source={{ uri: tutorDetailState.video }}
+                                useNativeControls
+                                resizeMode="contain"
+                                isLooping
+                                style={styles.videoStyle}
+                            />
+                        </View>
+                        <View style={styles.skillTags}>
+                            <Text style={styles.title}>Ngôn ngữ</Text>
+                            <View style={styles.tags}>
+                                {listLanguage}
                             </View>
                         </View>
 
-                    </View>
+                        <View style={styles.skillTags}>
+                            <Text style={styles.title}>Chuyên ngành</Text>
+                            <View style={styles.tags}>
+                                {listSkill}
+                            </View>
+                        </View>
 
-                    <Text style={styles.text}>I am passionate about running and fitness,
-                        I often compete in trail/mountain running events and I love pushing myself.
-                        I am training to one day take part in ultra-endurance events.
-                        I also enjoy watching rugby on the weekends, reading and watching podcasts on Youtube.
-                        My most memorable life experience would be living in and traveling around Southeast Asia.
-                    </Text>
+                        <View style={styles.skill}>
+                            <Text style={styles.title}>Sở thích</Text>
+                            <Text style={styles.text}>{tutorDetailState.interests}</Text>
+                        </View>
 
-                    <View style={styles.functionButton}>
-                        <TouchableOpacity style={styles.functionGroup}>
-                            <Image style={styles.favouriteIcon} source={heart} resizeMode='contain'></Image>
-                            <Text style={styles.functionText}>Yêu thích</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.functionGroup}>
-                            <Image style={styles.favouriteIcon} source={warning} resizeMode='contain'></Image>
-                            <Text style={styles.functionText}>Báo cáo</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.functionGroup}>
-                            <Image style={styles.favouriteIcon} source={starUnactive} resizeMode='contain'></Image>
-                            <Text style={styles.functionText}>Đánh giá</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.videoFrame}>
-                        <Video
-                            source={video}
-                            useNativeControls
-                            resizeMode="contain"
-                            isLooping
-                            style={styles.videoStyle}
-                        />
-                    </View>
-                    <View style={styles.skillTags}>
-                        <Text style={styles.title}>Ngôn ngữ</Text>
-                        <View style={styles.tags}>
-                            <FilterTag title='Tiếng anh' state={true} handleTouch={true} />
+                        <View style={styles.skill}>
+                            <Text style={styles.title}>Kinh nghiệm giảng dạy</Text>
+                            <Text style={styles.text}>{tutorDetailState.experience}</Text>
                         </View>
                     </View>
-
-                    <View style={styles.skillTags}>
-                        <Text style={styles.title}>Chuyên ngành</Text>
-                        <View style={styles.tags}>
-                            <FilterTag title='Tiếng anh cho công việc' state={true} handleTouch={true} />
-                            <FilterTag title='Giao tiếp' state={true} handleTouch={true} />
-                            <FilterTag title='Tiếng anh cho trẻ' state={true} handleTouch={true} />
-                            <FilterTag title='IELTS' state={true} handleTouch={true} />
-                            <FilterTag title='TOEIC' state={true} handleTouch={true} />
-                            <FilterTag title='KET' state={true} handleTouch={true} />
-                            <FilterTag title='PET' state={true} handleTouch={true} />
-                            <FilterTag title='STARTER' state={true} handleTouch={true} />
-                            <FilterTag title='IELTS' state={true} handleTouch={true} />
-                            <FilterTag title='TOEIC' state={true} handleTouch={true} />
-                        </View>
-                    </View>
-
-                    <View style={styles.skill}>
-                        <Text style={styles.title}>Sở thích</Text>
-                        <Text style={styles.text}>I am a fun, talkative person who loves to find out about others cultures and experience.</Text>
-                    </View>
-
-                    <View style={styles.skill}>
-                        <Text style={styles.title}>Kinh nghiệm giảng dạy</Text>
-                        <Text style={styles.text}>Acadsoc - English Language Instruction Chinese based online English teaching platform. I taught EILTS as well as a wide age range of Children and adults of all levels. Sincewin - English Language Instruction Online English lessons for whole kindergarten classes. I taught basic phonics and vocabulary using songs, TPR and puppets</Text>
-                    </View>
-                </View>
-            </ScrollView>
-
+                </ScrollView>
+            }
 
         </View>
+
     );
 }
 
@@ -229,11 +247,11 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         marginRight: 10,
     },
-    skill:{
+    skill: {
         marginVertical: 10,
     },
-    touchOnLogo:{
-        flex:1,
+    touchOnLogo: {
+        flex: 1,
     }
 }
 
@@ -241,4 +259,4 @@ const styles = StyleSheet.create({
 
 );
 
-export default LoginView;
+export default TeacherDetail;

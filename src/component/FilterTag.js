@@ -1,12 +1,20 @@
 import React, { useState } from "react";
 import { Image, StyleSheet, Text, SafeAreaView, View, TouchableOpacity, ScrollView, TextInput } from 'react-native';
 
-const FilterTag = ({title, state, handleTouch}) => {
-    const [choosen, setChoosen] = useState(state === undefined? false: state);
+const val = {
+    'en': 'Tiếng Anh',
+    "business-english" : "Tiếng Anh cho công việc" ,
+    "conversational-english": "Tiếng Anh giao tiếp",
+    "english-for-kids": "Tiếng Anh cho trẻ em",
+    "ielts" : "IELTS",
+    "toeic": "TOEIC",
+}
+const FilterTag = ({ title, state, handleTouch }) => {
+    const [choosen, setChoosen] = useState(state === undefined ? false : state);
     return (
-            <TouchableOpacity style={[styles.fastFilterTag, choosen? styles.choosenTag: styles.unChoosenTag]} onPress={ () => (handleTouch === undefined) && setChoosen(!choosen)}>
-                <Text style={choosen? styles.choosenTagText: styles.unChoosenTagText}>{title}</Text>
-            </TouchableOpacity>
+        <TouchableOpacity style={[styles.fastFilterTag, choosen ? styles.choosenTag : styles.unChoosenTag]} onPress={() => (handleTouch === undefined) && setChoosen(!choosen)}>
+            <Text style={choosen ? styles.choosenTagText : styles.unChoosenTagText}>{val[title] !== undefined ?val[title]:title }</Text>
+        </TouchableOpacity>
     )
 }
 
@@ -18,17 +26,17 @@ const styles = StyleSheet.create({
         marginVertical: 2,
         marginEnd: 2
     },
-    choosenTagText:{
+    choosenTagText: {
         color: '#7271F1',
 
     },
-    unChoosenTagText:{
+    unChoosenTagText: {
         color: '#AAABAD'
     },
-    choosenTag:{
+    choosenTag: {
         backgroundColor: '#DDEAFF'
     },
-    unChoosenTag:{
+    unChoosenTag: {
         backgroundColor: '#F5F6FA'
     }
 }

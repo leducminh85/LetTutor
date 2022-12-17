@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Image, StyleSheet, Text, SafeAreaView, View, TouchableOpacity, ScrollView, TextInput } from 'react-native';
-
+import { AntDesign } from '@expo/vector-icons';
 import avatar from '../../assets/img/avatar.jpg'
 import heart from '../../assets/img/heart.png'
 import calendar from '../../assets/img/calendar.png'
@@ -10,8 +10,8 @@ import France from '../../assets/img/flag/France.png'
 import Vote from './Vote'
 import FilterTag from './FilterTag'
 
-const TeacherCard = ({ navigation, teacher}) => {
-    const [choosen, setChoosen] = useState(false);
+const TeacherCard = ({ navigation, teacher, teacherId, handlePress }) => {
+    const [favoriteState, setFavoriteState] = useState(false);
 
     const specialties = teacher.specialties.split(',')
     var listSkill = [];
@@ -26,22 +26,28 @@ const TeacherCard = ({ navigation, teacher}) => {
                 <View style={styles.teacherInfor}>
                     <Image style={styles.avatar} source={/*teacher.*/avatar} alt={'avatar'} resizeMode='contain'></Image>
                     <View style={styles.teacherInforDetail}>
-                        <TouchableOpacity onPress={()=>navigation.navigate('teacherDetail')}>
+                        <TouchableOpacity onPress={async () => {
+                            navigation.navigate('teacherDetail', {teacherId: teacherId})}
+                            }>
                             <Text style={styles.teacherName}>{teacher.name}</Text>
                         </TouchableOpacity>
                         <View style={styles.country}>
                             <Image style={styles.flag} source={France} resizeMode='contain'></Image>
                             <Text>{teacher.country}</Text>
                         </View>
-                        <Vote num={teacher.rating}/>
+                        <Vote num={teacher.rating} />
                     </View>
                 </View>
-                <TouchableOpacity style={styles.favouriteTeacher}>
-                    <Image style={styles.favouriteIcon} source={heart} resizeMode='contain'></Image>
+                <TouchableOpacity style={styles.favouriteTeacher} onPress={() => setFavoriteState(!favoriteState)}>
+                   { favoriteState ? 
+                    <AntDesign name="heart" size={24} color="red" /> :
+                    <AntDesign name="hearto" size={24} color="black" /> 
+
+                   }
                 </TouchableOpacity>
             </View>
             <View style={styles.skills}>
-              {listSkill}
+                {listSkill}
             </View>
             <Text style={styles.text}>{teacher.bio}
             </Text>

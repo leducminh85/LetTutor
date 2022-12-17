@@ -7,6 +7,8 @@ import Header from "../../component/Header";
 import { StateContext, StateProvider } from "../../Context/StateContext";
 
 import GetTutorList from "../../Services/GetTutorList";
+import GetTutorInfo from "../../Services/GetTutorInfo";
+
 const Home = ({ navigation }) => {
     const [data, setData] = useContext(StateContext)
     const [tutorListState, setTutorListState] = useState()
@@ -21,6 +23,9 @@ const Home = ({ navigation }) => {
             setFavouriteList(tutorListState.favoriteTutor)
     }, [tutorListState]);
 
+    function tutorDetail(id, setTutorInfo){
+        GetTutorInfo(data.access.token, id, setTutorInfo)
+    }
 
     return (
         <View style={styles.container}>
@@ -93,7 +98,7 @@ const Home = ({ navigation }) => {
                             {tutorListState !== undefined ?
                                 tutorListState.tutors.rows.map((teacher) => {
                                     return (
-                                        <TeacherCard key={teacher.id} navigation={navigation} teacher={teacher}></TeacherCard>
+                                        <TeacherCard teacherId={teacher.userId} key={teacher.id} navigation={navigation} teacher={teacher} handlePress={tutorDetail}></TeacherCard>
                                     )
                                 }) : undefined
                             }
