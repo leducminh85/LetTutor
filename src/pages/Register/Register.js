@@ -48,7 +48,6 @@ const RegisterView = ({ navigation }) => {
 
     useEffect(() => {
 
-        //   console.log(loginState)
         if (registerState !== undefined) {
             console.log(registerState.data)
             if (registerState.data.message === 'Email has already taken')

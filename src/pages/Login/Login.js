@@ -8,9 +8,11 @@ import googleLogo from '../../../assets/img/googleLogo.png'
 import mobileLogo from '../../../assets/img/mobileLogo.png'
 
 import Login from "../../Services/Login";
-// import { AuthContext } from "../Context/AuthContext";
+import { StateContext, StateProvider } from "../../Context/StateContext";
+import deviceStorage from '../../Services/DeviceStorage';
 
-import { useEffect } from "react";
+
+import { useEffect, useContext } from "react";
 const LoginView = ({ navigation }) => {
     const [emailError, setemailError] = useState('');
     const [loginError, setloginError] = useState('');
@@ -22,7 +24,7 @@ const LoginView = ({ navigation }) => {
     const [loginState, setLoginState] = useState();
     const [passwordVisible, setPasswordVisible] = useState(true);
 
-    // const {isLoading, userToken} = useContext(AuthContext);
+    const [data, setData] = useContext(StateContext)
 
     async function loginForm() {
         setemailError('')
@@ -46,16 +48,19 @@ const LoginView = ({ navigation }) => {
 
         //   console.log(loginState)
         if (loginState !== undefined) {
-            console.log(loginState)
             if (loginState.data == undefined)
                 setloginError('Tài khoản hoặc mật khẩu không đúng')
             else {
+                setData(loginState.data)
                 navigation.navigate('home')
             }
         }
     }, [loginState]);
+    
 
-
+    useEffect( () => {
+        // console.log(deviceStorage.getItem('token'))
+    }, []);
     // useEffect(() => {
     //    if (userToken !== null)
     //     navigation.navigate('home')
@@ -70,62 +75,66 @@ const LoginView = ({ navigation }) => {
     // }
 
     return (
-        <View style={styles.container}>
-            <View style={styles.header}>
-                <Image style={styles.logo} source={logo} resizeMode='contain'></Image>
-            </View>
+        <StateProvider>
 
-            <View style={styles.authentication}>
-                <View style={styles.content}>
-                    <Text style={styles.loginText}> Đăng nhập </Text>
-                    <View style={styles.loginArea}>
-                        <Text style={styles.textIntro}> Phát triển kỹ năng tiếng Anh nhanh nhất bằng cách
-                            học 1 kèm 1 trực tuyến theo mục tiêu và lộ trình dành cho riêng bạn</Text>
-                        <View style={styles.formLogin}>
-                            <TextInput style={styles.input} value={email} onChangeText={setEmail} name="email" label="ĐỊA CHỈ EMAIL " />
-                            {emailError !== '' && <Text style={styles.error}>{emailError}</Text>}
+            <View style={styles.container}>
+                <View style={styles.header}>
+                    <Image style={styles.logo} source={logo} resizeMode='contain'></Image>
+                </View>
 
-                            <TextInput style={styles.input} value={password} onChangeText={setPassword} name="password" label="MẬT KHẨU " secureTextEntry={passwordVisible}
-                                right={<TextInput.Icon name={passwordVisible ? "eye" : "eye-off"} onPress={() => setPasswordVisible(!passwordVisible)} />} />
-                            {passwordError !== '' && <Text style={styles.error}>{passwordError}</Text>}
+                <View style={styles.authentication}>
+                    <View style={styles.content}>
+                        <Text style={styles.loginText}> Đăng nhập </Text>
+                        <View style={styles.loginArea}>
+                            <Text style={styles.textIntro}> Phát triển kỹ năng tiếng Anh nhanh nhất bằng cách
+                                học 1 kèm 1 trực tuyến theo mục tiêu và lộ trình dành cho riêng bạn</Text>
+                            <View style={styles.formLogin}>
+                                <TextInput style={styles.input} value={email} onChangeText={setEmail} name="email" label="ĐỊA CHỈ EMAIL " />
+                                {emailError !== '' && <Text style={styles.error}>{emailError}</Text>}
 
-                            <TouchableOpacity style={styles.forgotPass} onPress={() => navigation.navigate('forgotPassword')}>
-                                <Text style={styles.forgotPassText}> Quên mật khẩu? </Text>
-                            </TouchableOpacity>
+                                <TextInput style={styles.input} value={password} onChangeText={setPassword} name="password" label="MẬT KHẨU " secureTextEntry={passwordVisible}
+                                    right={<TextInput.Icon name={passwordVisible ? "eye" : "eye-off"} onPress={() => setPasswordVisible(!passwordVisible)} />} />
+                                {passwordError !== '' && <Text style={styles.error}>{passwordError}</Text>}
 
-                            <TouchableOpacity style={styles.loginButton} onPress={loginForm}>
-                                <Text style={styles.loginButtonText}> ĐĂNG NHẬP </Text>
-                            </TouchableOpacity>
-                            {loginError !== '' &&<Text style={styles.error}>{loginError}</Text>}
-
-                        </View>
-
-                        <View style={styles.otherLogin}>
-                            <Text>Hoặc tiếp tục với</Text>
-                            <View style={styles.otherLoginIcons}>
-                                <TouchableOpacity>
-                                    <Image style={styles.otherLoginIcon} source={facebookLogo} resizeMode='contain' />
+                                <TouchableOpacity style={styles.forgotPass} onPress={() => navigation.navigate('forgotPassword')}>
+                                    <Text style={styles.forgotPassText}> Quên mật khẩu? </Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity>
-                                    <Image style={styles.otherLoginIcon} source={googleLogo} resizeMode='contain' />
+
+                                <TouchableOpacity style={styles.loginButton} onPress={loginForm}>
+                                    <Text style={styles.loginButtonText}> ĐĂNG NHẬP </Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={styles.phoneIcon}>
-                                    <Image style={[styles.otherLoginIcon]} source={mobileLogo} resizeMode='contain' />
-                                </TouchableOpacity>
-                            </View>
-                            <View style={styles.registerText}>
-                                <Text >Chưa có tài khoản? </Text>
-                                <TouchableOpacity onPress={() => navigation.navigate('register')}>
-                                    <Text style={styles.forgotPassText}>Đăng ký</Text>
-                                </TouchableOpacity>
+                                {loginError !== '' && <Text style={styles.error}>{loginError}</Text>}
+
                             </View>
 
+                            <View style={styles.otherLogin}>
+                                <Text>Hoặc tiếp tục với</Text>
+                                <View style={styles.otherLoginIcons}>
+                                    <TouchableOpacity>
+                                        <Image style={styles.otherLoginIcon} source={facebookLogo} resizeMode='contain' />
+                                    </TouchableOpacity>
+                                    <TouchableOpacity>
+                                        <Image style={styles.otherLoginIcon} source={googleLogo} resizeMode='contain' />
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.phoneIcon}>
+                                        <Image style={[styles.otherLoginIcon]} source={mobileLogo} resizeMode='contain' />
+                                    </TouchableOpacity>
+                                </View>
+                                <View style={styles.registerText}>
+                                    <Text >Chưa có tài khoản? </Text>
+                                    <TouchableOpacity onPress={() => navigation.navigate('register')}>
+                                        <Text style={styles.forgotPassText}>Đăng ký</Text>
+                                    </TouchableOpacity>
+                                </View>
 
+
+                            </View>
                         </View>
                     </View>
                 </View>
             </View>
-        </View>
+        </StateProvider>
+
     );
 }
 

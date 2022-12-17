@@ -1,13 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Image, StyleSheet, Text, SafeAreaView, View, TouchableOpacity, ScrollView, TextInput } from 'react-native';
 
 import FilterTag from "../../component/FilterTag";
 import TeacherCard from "../../component/TeacherCard";
 import Header from "../../component/Header";
+import { StateContext, StateProvider } from "../../Context/StateContext";
+
+import GetTutorList from "../../Services/GetTutorList";
+
 const Home = ({ navigation }) => {
+    const [data, setData] = useContext(StateContext)
+    const [tutorListState, setTutorListState] = useState()
+
+    useEffect(() => {
+        GetTutorList(data.tokens.access.token, 1, setTutorListState)
+    }, []);
+
     return (
         <View style={styles.container}>
-            <Header navigation={navigation} page={'home'}/>
+            <Header navigation={navigation} page={'home'} />
             <ScrollView>
                 <View style={styles.notification}>
                     <View style={styles.notiTitle}>
@@ -65,10 +76,13 @@ const Home = ({ navigation }) => {
                             <Text style={styles.filterTitleText}>Gia sư được đề xuất</Text>
                         </View>
                         <View>
-                            <TeacherCard navigation={navigation}></TeacherCard>
-                            <TeacherCard navigation={navigation}></TeacherCard>
-                            <TeacherCard navigation={navigation}></TeacherCard>
-                            <TeacherCard navigation={navigation}></TeacherCard>
+                            {tutorListState.tutors !== undefined && 
+                                tutorListState.tutors.rows.map((teacher) => {
+                                    return (
+                                        <TeacherCard key={teacher.id} navigation={navigation} teacher={teacher}></TeacherCard>
+                                    )
+                                })
+                            }
 
                         </View>
 
@@ -91,7 +105,7 @@ const styles = StyleSheet.create({
         fontSize: 25,
         fontWeight: '500',
     },
-    
+
     notification: {
         backgroundColor: '#0071F0',
         padding: 30,
@@ -182,7 +196,7 @@ const styles = StyleSheet.create({
         width: '50%',
         marginVertical: 10
     },
-   
+
 
 }
 

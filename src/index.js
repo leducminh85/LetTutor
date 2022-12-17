@@ -8,6 +8,8 @@ import Profile from './pages/Profile/Profile'
 import Home from './pages/Home/Home'
 import TeacherDetail from './pages/TeacherDetail/TeacherDetail'
 import MenuList from './pages/MenuList/MenuList'
+import { StateProvider } from './Context/StateContext';
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -23,6 +25,7 @@ const Stack = createNativeStackNavigator();
 
 function App() {
   return (
+    <StateProvider>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Home">
           <Stack.Screen options={{ headerShown: false }} name="login" component={Login} />
@@ -35,6 +38,7 @@ function App() {
 
         </Stack.Navigator>
       </NavigationContainer>
+    </StateProvider>
   );
 }
 

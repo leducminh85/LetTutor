@@ -1,6 +1,6 @@
 import axios from "axios";
-import { useState } from "react";
 const baseUrl = 'https://sandbox.api.lettutor.com/';
+import deviceStorage from './DeviceStorage';
 
 
 export default async function Login( email, password, setLoginState) {
@@ -14,10 +14,12 @@ export default async function Login( email, password, setLoginState) {
             "password": password
         }
 
-    },).then( (response) => {
+    },).then( async (response) => {
         // handle success
         console.log('success') 
         setLoginState(response)
+        deviceStorage.saveKey("token", response.data.tokens);
+
     })
         .catch(function (error) {
             // handle error
