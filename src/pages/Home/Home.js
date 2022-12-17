@@ -7,14 +7,20 @@ import Header from "../../component/Header";
 import { StateContext, StateProvider } from "../../Context/StateContext";
 
 import GetTutorList from "../../Services/GetTutorList";
-
 const Home = ({ navigation }) => {
     const [data, setData] = useContext(StateContext)
     const [tutorListState, setTutorListState] = useState()
+    const [favouriteList, setFavouriteList] = useState()
 
     useEffect(() => {
-        GetTutorList(data.tokens.access.token, 1, setTutorListState)
+        GetTutorList(data.access.token, 1, setTutorListState)
     }, []);
+
+    useEffect(() => {
+        if (tutorListState !== undefined)
+            setFavouriteList(tutorListState.favoriteTutor)
+    }, [tutorListState]);
+
 
     return (
         <View style={styles.container}>
@@ -76,18 +82,27 @@ const Home = ({ navigation }) => {
                             <Text style={styles.filterTitleText}>Gia sư được đề xuất</Text>
                         </View>
                         <View>
+                            {/* {favouriteList !== undefined ?
+                                favouriteList.map((teacher) => {
+                                    if (teacher.secondInfo !== undefined)
+                                    return (
+                                        <TeacherCard key={teacher.secondInfo.id} navigation={navigation} teacher={teacher.secondInfo}></TeacherCard>
+                                    )
+                                }) : undefined
+                            } */}
                             {tutorListState !== undefined ?
                                 tutorListState.tutors.rows.map((teacher) => {
                                     return (
                                         <TeacherCard key={teacher.id} navigation={navigation} teacher={teacher}></TeacherCard>
                                     )
-                                }):undefined
+                                }) : undefined
                             }
 
                         </View>
 
                     </View>
                 </View>
+
             </ScrollView>
 
 

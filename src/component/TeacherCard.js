@@ -16,10 +16,8 @@ const TeacherCard = ({ navigation, teacher}) => {
     const specialties = teacher.specialties.split(',')
     var listSkill = [];
     for (const skill in specialties) {
-        console.log(`${skill}: ${specialties[skill]}`);
-
         listSkill.push(
-            <FilterTag title={specialties[skill]} state={true} handleTouch={true} />
+            <FilterTag key={skill} title={specialties[skill]} state={true} handleTouch={true} />
         )
     }
     return (
@@ -69,7 +67,7 @@ const styles = StyleSheet.create({
     },
     teacherInfor: {
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
     },
     teacherInforDetail: {
         flexDirection: 'column',

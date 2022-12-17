@@ -28,6 +28,22 @@ const LoginView = ({ navigation }) => {
 
     const [data, setData] = useContext(StateContext)
 
+    useEffect(() => {
+        try {
+            const value = AsyncStorage.getItem('token');
+
+            if (value !== null) {
+                // We have data!!
+                //console.log(value != null ? JSON.parse(value) : null)
+                console.log(JSON.parse(value))
+                setData({ "tokens": JSON.parse(value) })
+                navigation.navigate('home')
+            }
+        } catch (error) {
+            // Error retrieving data
+            console.log(error)
+        }
+    }, []);
     async function loginForm() {
         setemailError('')
         setPasswordError('')
@@ -53,28 +69,14 @@ const LoginView = ({ navigation }) => {
             if (loginState.data == undefined)
                 setloginError('Tài khoản hoặc mật khẩu không đúng')
             else {
-                setData(loginState.data)
+                setData(loginState.data.tokens)
                 navigation.navigate('home')
             }
         }
     }, [loginState]);
 
 
-    useEffect(() => {
-        try {
-            const value = AsyncStorage.getItem('token');
 
-            if (value !== null) {
-                // We have data!!
-                //console.log(value != null ? JSON.parse(value) : null)
-
-                setData({"tokens":JSON.parse(value)  })
-            }
-        } catch (error) {
-            // Error retrieving data
-            console.log(error)
-        }
-    }, []);
 
     return (
         <StateProvider>
