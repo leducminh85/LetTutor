@@ -1,6 +1,7 @@
 import axios from "axios";
 const baseUrl = 'https://sandbox.api.lettutor.com/';
 import deviceStorage from './DeviceStorage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default async function Login( email, password, setLoginState) {
@@ -16,9 +17,21 @@ export default async function Login( email, password, setLoginState) {
 
     },).then( async (response) => {
         // handle success
-        console.log('success') 
+        try {
+            const jsonValue = JSON.stringify(response.data.tokens)
+
+            await AsyncStorage.setItem(
+                "token", jsonValue
+            );
+            console.log('save token')
+          } catch (error) {
+            // Error saving data
+            console.log(error)
+          }
+
+        console.log('login success') 
         setLoginState(response)
-        deviceStorage.saveKey("token", response.data.tokens);
+    
 
     })
         .catch(function (error) {

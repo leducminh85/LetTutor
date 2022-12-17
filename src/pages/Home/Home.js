@@ -76,12 +76,12 @@ const Home = ({ navigation }) => {
                             <Text style={styles.filterTitleText}>Gia sư được đề xuất</Text>
                         </View>
                         <View>
-                            {tutorListState.tutors !== undefined && 
+                            {tutorListState !== undefined ?
                                 tutorListState.tutors.rows.map((teacher) => {
                                     return (
                                         <TeacherCard key={teacher.id} navigation={navigation} teacher={teacher}></TeacherCard>
                                     )
-                                })
+                                }):undefined
                             }
 
                         </View>

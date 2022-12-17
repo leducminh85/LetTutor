@@ -10,6 +10,8 @@ import mobileLogo from '../../../assets/img/mobileLogo.png'
 import Login from "../../Services/Login";
 import { StateContext, StateProvider } from "../../Context/StateContext";
 import deviceStorage from '../../Services/DeviceStorage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 import { useEffect, useContext } from "react";
@@ -56,23 +58,23 @@ const LoginView = ({ navigation }) => {
             }
         }
     }, [loginState]);
-    
 
-    useEffect( () => {
-        // console.log(deviceStorage.getItem('token'))
+
+    useEffect(() => {
+        try {
+            const value = AsyncStorage.getItem('token');
+
+            if (value !== null) {
+                // We have data!!
+                //console.log(value != null ? JSON.parse(value) : null)
+
+                setData({"tokens":JSON.parse(value)  })
+            }
+        } catch (error) {
+            // Error retrieving data
+            console.log(error)
+        }
     }, []);
-    // useEffect(() => {
-    //    if (userToken !== null)
-    //     navigation.navigate('home')
-    // }, []);
-
-    // if (isLoading){
-    //     return (
-    //         <View>
-    //             <ActivityIndicator size={'large'}></ActivityIndicator>
-    //         </View>
-    //     )
-    // }
 
     return (
         <StateProvider>

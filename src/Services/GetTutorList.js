@@ -13,7 +13,6 @@ export default async function GetTutorList(token, page, setTutorListState) {
         }, 
     },).then( (response) => {
         setTutorListState(response.data)
-        console.log(response)
     })
         .catch((error) => {
             // handle error

@@ -10,22 +10,32 @@ import France from '../../assets/img/flag/France.png'
 import Vote from './Vote'
 import FilterTag from './FilterTag'
 
-const TeacherCard = ({ navigation }) => {
+const TeacherCard = ({ navigation, teacher}) => {
     const [choosen, setChoosen] = useState(false);
+
+    const specialties = teacher.specialties.split(',')
+    var listSkill = [];
+    for (const skill in specialties) {
+        console.log(`${skill}: ${specialties[skill]}`);
+
+        listSkill.push(
+            <FilterTag title={specialties[skill]} state={true} handleTouch={true} />
+        )
+    }
     return (
         <View style={styles.container}>
             <View style={styles.teacherInfor}>
                 <View style={styles.teacherInfor}>
-                    <Image style={styles.avatar} source={avatar} resizeMode='contain'></Image>
+                    <Image style={styles.avatar} source={/*teacher.*/avatar} alt={'avatar'} resizeMode='contain'></Image>
                     <View style={styles.teacherInforDetail}>
                         <TouchableOpacity onPress={()=>navigation.navigate('teacherDetail')}>
-                            <Text style={styles.teacherName}>Keegan</Text>
+                            <Text style={styles.teacherName}>{teacher.name}</Text>
                         </TouchableOpacity>
                         <View style={styles.country}>
                             <Image style={styles.flag} source={France} resizeMode='contain'></Image>
-                            <Text>Franch</Text>
+                            <Text>{teacher.country}</Text>
                         </View>
-                        <Vote />
+                        <Vote num={teacher.rating}/>
                     </View>
                 </View>
                 <TouchableOpacity style={styles.favouriteTeacher}>
@@ -33,17 +43,9 @@ const TeacherCard = ({ navigation }) => {
                 </TouchableOpacity>
             </View>
             <View style={styles.skills}>
-                <FilterTag title='Tiếng anh cho công việc' state={true} handleTouch={true} />
-                <FilterTag title='Giao tiếp' state={true} handleTouch={true} />
-                <FilterTag title='Tiếng anh cho trẻ' state={true} handleTouch={true} />
-                <FilterTag title='IELTS' state={true} handleTouch={true} />
-                <FilterTag title='TOEIC' state={true} handleTouch={true} />
+              {listSkill}
             </View>
-            <Text style={styles.text}>I am passionate about running and fitness,
-                I often compete in trail/mountain running events and I love pushing myself.
-                I am training to one day take part in ultra-endurance events.
-                I also enjoy watching rugby on the weekends, reading and watching podcasts on Youtube.
-                My most memorable life experience would be living in and traveling around Southeast Asia.
+            <Text style={styles.text}>{teacher.bio}
             </Text>
             <TouchableOpacity style={styles.bookTeacher}>
                 <Image source={calendar} resizeMode='contain' style={styles.calendarIcon}></Image>
