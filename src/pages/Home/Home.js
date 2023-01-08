@@ -25,6 +25,11 @@ const Home = ({ navigation }) => {
 
     const [findByNameList, setFindByNameList] = useState([])
     const [findState, setFindState] = useState(false)
+	
+    const [minute, setMinute] = React.useState(38);
+    const [timeCountDown, setTimeCountdown] = React.useState(40);
+    const SecondTimerRef = React.useRef(timeCountDown);
+	const videoTimerMinuteRef = React.useRef(minute);
 
     const Boiler = async () => {
         try {
@@ -37,6 +42,32 @@ const Home = ({ navigation }) => {
             console.log(error)
         }
     }
+
+    const countDown = () => {
+        const videoTimerId = setInterval(() => {
+			SecondTimerRef.current -= 1;
+
+			if (SecondTimerRef.current === 0) {
+				videoTimerMinuteRef.current -= 1;
+				setMinute(videoTimerMinuteRef.current);
+				SecondTimerRef.current = 59;
+			}
+			if (SecondTimerRef.current < 0) {
+				clearInterval(videoTimerId);
+				setTimeCountdown(59);
+				SecondTimerRef.current = 0;
+			} else {
+				setTimeCountdown(SecondTimerRef.current);
+			}
+		}, 1000);
+		return () => {
+			clearInterval(videoTimerId);
+		};
+    }
+    useEffect(() => {
+       countDown();
+    }, []);
+
     useEffect(() => {
         Boiler();
     }, []);
@@ -138,8 +169,8 @@ const Home = ({ navigation }) => {
                         </View>
                         <View style={styles.timeArea}>
                             <View style={styles.classTime}>
-                                <Text style={styles.timeText}>CN, 23 thg 10 22 11:00 - 11:25</Text>
-                                <Text style={styles.timeLeft}> (giờ học 00:20:14)</Text>
+                                <Text style={styles.timeText}>Thu 2, 9 thg 1 23 10:00 - 11:25</Text>
+                                <Text style={styles.timeLeft}> (giờ học 0 : {minute} : {timeCountDown})</Text>
                             </View>
                             <TouchableOpacity style={styles.gotoClassButton}>
                                 <Text style={styles.gotoClassButtonText}> Vào lớp học </Text>
@@ -207,11 +238,11 @@ const Home = ({ navigation }) => {
                                                 <TeacherCard favourite={teacher.favourite} teacherId={teacher.userId} key={teacher.id} navigation={navigation} teacher={teacher} handlePress={tutorDetail}></TeacherCard>
                                             )
                                         }) : undefined)
-                                    : (findByNameList.length !== 0? findByNameList.map((teacher) => {
+                                    : (findByNameList.length !== 0 ? findByNameList.map((teacher) => {
                                         return (
                                             <TeacherCard favourite={teacher.favourite} teacherId={teacher.userId} key={teacher.id} navigation={navigation} teacher={teacher} handlePress={tutorDetail}></TeacherCard>
                                         )
-                                    }) : 
+                                    }) :
                                         <Text> Danh sách trống</Text>
                                     )
                                 }
