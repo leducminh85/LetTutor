@@ -1,13 +1,47 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Image, StyleSheet, Text, SafeAreaView, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 
 import Header from "../../component/Header";
 import logo from '../../../assets/img/logo.png'
 import list from '../../../assets/img/list.png'
 import avatar from '../../../assets/img/avatar.jpg'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import GetUserInfo from "../../Services/GetUserInfo"
+import User from "../../modal/User"
 
 const Profile = ({ navigation }) => {
+    const [accessToken, setToken] = useState()
+    const [userInfo, setUserInfo] = useState()
+    //  const [user, setUser] = useState()
+    var user;
+    const Boiler = async () => {
+        try {
+            const token = await AsyncStorage.getItem("token")
+            if (token !== undefined) {
+                setToken(JSON.parse(token).access.token)
+                //console.log(JSON.parse(token).access.token)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    useEffect(() => {
+        Boiler();
+    }, []);
 
+    useEffect(() => {
+        if (accessToken != undefined)
+            GetUserInfo(accessToken, setUserInfo);
+    }, [accessToken]);
+    useEffect(() => {
+        if (userInfo !== undefined) {
+            var userTemp = new User(userInfo.id, userInfo.name, userInfo.avatar, userInfo.country,
+                userInfo.phone, userInfo.email, userInfo.birthday, userInfo.level, userInfo.learnTopic)
+           // setUser(userTemp)
+           user = userTemp
+        }
+    }, [userInfo]);
     const [showAccountInfor, setShowAccountInfor] = useState(true);
 
     return (
@@ -16,53 +50,55 @@ const Profile = ({ navigation }) => {
 
             <ScrollView style={styles.content}>
                 <View style={styles.avatarArea}>
-                    <Image style={styles.avatar} source={avatar} resizeMode='contain'></Image>
+                    <Image style={styles.avatar} source={userInfo !== undefined ? { uri: userInfo.avatar } : undefined} resizeMode='contain'></Image>
                     <View style={styles.infor}>
-                        <Text style={styles.name}>Long Long</Text>
-                        <Text style={styles.id}>ID: 123-456-789adasda-45a4d8sd </Text>
+                        <Text style={styles.name}>{userInfo !== undefined ? userInfo.name : ''}</Text>
+                        <Text style={styles.id}>ID: {userInfo !== undefined ? userInfo.id : ''} </Text>
                         <TouchableOpacity onPress={() => navigation.navigate('login')}>
                             <Text style={styles.linkText}>Người khác đánh giá bạn</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
                 <View style={styles.account}>
-                    <TouchableOpacity style={styles.accountText} onPress={()=>setShowAccountInfor(!showAccountInfor)}>
+                    <TouchableOpacity style={styles.accountText} onPress={() => setShowAccountInfor(!showAccountInfor)}>
                         <Text>Tài khoản</Text>
                     </TouchableOpacity>
                     {showAccountInfor && <View style={styles.accountInfo}>
                         <View style={styles.tag}>
                             <Text style={styles.label}><Text style={{ color: 'red' }}>*</Text>Tên</Text>
-                            <TextInput style={styles.input} defaultValue=" Long Long"></TextInput>
+                            <TextInput style={styles.input} defaultValue={userInfo !== undefined ? userInfo.name : ''}
+                                onChangeText={(name) => user.setName(name)}
+                            ></TextInput>
                         </View>
 
                         <View style={styles.tag}>
                             <Text style={styles.label}>Địa chỉ email</Text>
-                            <TextInput style={styles.input} defaultValue=" Student@lettutor.com"></TextInput>
+                            <TextInput style={styles.input} defaultValue={userInfo !== undefined ? userInfo.email : ''}></TextInput>
                         </View>
 
                         <View style={styles.tag}>
                             <Text style={styles.label}><Text style={{ color: 'red' }}>*</Text>Quốc gia</Text>
-                            <TextInput style={styles.input} defaultValue=" Việt Nam"></TextInput>
+                            <TextInput style={styles.input} defaultValue={userInfo !== undefined ? userInfo.country : ''}></TextInput>
                         </View>
 
                         <View style={styles.tag}>
                             <Text style={styles.label}><Text style={{ color: 'red' }}>*</Text>Số điện thoại</Text>
-                            <TextInput style={styles.input} defaultValue=" 0358887503"></TextInput>
+                            <TextInput style={styles.input} defaultValue={userInfo !== undefined ? userInfo.phone : ''}></TextInput>
                         </View>
 
                         <View style={styles.tag}>
                             <Text style={styles.label}><Text style={{ color: 'red' }}>*</Text>Ngày sinh</Text>
-                            <TextInput style={styles.input} defaultValue=" 1999-06-08"></TextInput>
+                            <TextInput style={styles.input} defaultValue={userInfo !== undefined ? userInfo.birthday : ''}></TextInput>
                         </View>
 
                         <View style={styles.tag}>
                             <Text style={styles.label}><Text style={{ color: 'red' }}>*</Text>Trình độ</Text>
-                            <TextInput style={styles.input} defaultValue=" PreA1"></TextInput>
+                            <TextInput style={styles.input} defaultValue={userInfo !== undefined ? userInfo.level : ''}></TextInput>
                         </View>
 
                         <View style={styles.tag}>
                             <Text style={styles.label}><Text style={{ color: 'red' }}>*</Text>Muốn học</Text>
-                            <TextInput style={styles.input} defaultValue=" Business English"></TextInput>
+                            <TextInput style={styles.input}></TextInput>
                         </View>
 
                         <View style={styles.tag}>
@@ -71,8 +107,8 @@ const Profile = ({ navigation }) => {
                         </View>
 
                         <TouchableOpacity style={styles.confirmButton}>
-                                <Text style={styles.confirmButtonText}> Lưu thay đổi </Text>
-                            </TouchableOpacity>
+                            <Text style={styles.confirmButtonText}> Lưu thay đổi </Text>
+                        </TouchableOpacity>
                     </View>
                     }
                 </View>
@@ -177,7 +213,8 @@ const styles = StyleSheet.create({
         height: 40,
         borderRadius: 10,
         marginVertical: 5,
-        borderColor: '#C5C6C9'
+        borderColor: '#C5C6C9',
+        paddingLeft: 10
     },
     label: {
         fontWeight: 'bold',

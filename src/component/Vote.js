@@ -14,7 +14,7 @@ const Vote = ({ title, num }) => {
 
     return (
         <TouchableOpacity style={styles.stars}>
-            {num === null ? <Text style={styles.noRating}>Kkông có đánh giá</Text> : voteResult}
+            {num === null ? <Text style={styles.noRating}>Không có đánh giá</Text> : voteResult}
         </TouchableOpacity>
     )
 }

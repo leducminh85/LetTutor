@@ -10,8 +10,8 @@ import France from '../../assets/img/flag/France.png'
 import Vote from './Vote'
 import FilterTag from './FilterTag'
 
-const TeacherCard = ({ navigation, teacher, teacherId, handlePress }) => {
-    const [favoriteState, setFavoriteState] = useState(false);
+const TeacherCard = ({ navigation, teacher, teacherId, handlePress, favourite }) => {
+    const [favoriteState, setFavoriteState] = useState(favourite);
 
     const specialties = teacher.specialties.split(',')
     var listSkill = [];
@@ -27,7 +27,7 @@ const TeacherCard = ({ navigation, teacher, teacherId, handlePress }) => {
                     <Image style={styles.avatar} source={teacher.avatar !== '' ? {uri: teacher.avatar}: avatar} alt={'avatar'} resizeMode='contain'></Image>
                     <View style={styles.teacherInforDetail}>
                         <TouchableOpacity onPress={async () => {
-                            navigation.navigate('teacherDetail', {teacherId: teacherId})}
+                            navigation.navigate('teacherDetail', {teacher: teacher})}
                             }>
                             <Text style={styles.teacherName}>{teacher.name}</Text>
                         </TouchableOpacity>

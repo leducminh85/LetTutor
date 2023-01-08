@@ -22,6 +22,7 @@ const ForgotPasswordView = ({ navigation }) => {
         if (emailError === '')
             ForgotPassword(email, setForgotPassState)
     }
+    
 
     useEffect(() => {
 
@@ -41,8 +42,8 @@ const ForgotPasswordView = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.header}>
-                <Image style={styles.logo} source={logo} onPress={()=>navigation.navigate('login')} resizeMode='contain'></Image>
+            <View style={styles.header} onPress={()=>navigation.navigate('login')}>
+                <Image style={styles.logo} source={logo}  resizeMode='contain'></Image>
             </View>
 
             <View style={styles.authentication}>

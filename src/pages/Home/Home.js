@@ -9,14 +9,22 @@ import { StateContext, StateProvider } from "../../Context/StateContext";
 import GetTutorList from "../../Services/GetTutorList";
 import GetTutorInfo from "../../Services/GetTutorInfo";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Teacher from '../../modal/Teacher'
 
 const Home = ({ navigation }) => {
-   // const [data, setData] = useContext(StateContext)
+    // const [data, setData] = useContext(StateContext)
     const [accessToken, setAccesToken] = useState()//useContext(StateContext)
-   const [data, setData] = useContext(StateContext)
+    const [data, setData] = useContext(StateContext)
 
     const [tutorListState, setTutorListState] = useState()
-    const [favouriteList, setFavouriteList] = useState()
+    const [tutorList, setTutorList] = useState([])
+    const [filterSpecialties, setFilterSpecialties] = useState('')
+    const [filterTutorList, setFilterTutorList] = useState([])
+    const [findByName, setFindByName] = useState('')
+    const [findByCountry, setFindByCountry] = useState('')
+
+    const [findByNameList, setFindByNameList] = useState([])
+    const [findState, setFindState] = useState(false)
 
     const Boiler = async () => {
         try {
@@ -24,8 +32,6 @@ const Home = ({ navigation }) => {
             if (token !== null) {
                 setAccesToken(JSON.parse(token))
                 setData(JSON.parse(token))
-
-                //console.log(JSON.parse(token).access.token)
             }
         } catch (error) {
             console.log(error)
@@ -33,18 +39,88 @@ const Home = ({ navigation }) => {
     }
     useEffect(() => {
         Boiler();
-
     }, []);
 
     useEffect(() => {
-        console.log(accessToken)
         if (accessToken !== undefined)
             GetTutorList(accessToken.access.token, 1, setTutorListState)
     }, [accessToken]);
 
+    // useEffect(() => {
+    //     if (filterSpecialties !== '') {
+    //         var list = []
+
+    //         tutorList.map((teacher) => {
+    //             if (teacher.specialties.includes(filterSpecialties))
+    //                 list.push(teacher)
+    //         })
+    //         setFindByNameList(list)
+    //     }
+
+    // }, [filterSpecialties]);
+
+    function searchName() {
+        setFindState(true)
+        if (findByName !== '') {
+            var list = []
+            tutorList.map((teacher) => {
+
+                if (teacher.name.includes(findByName))
+                    list.push(teacher)
+            })
+            setFindByNameList(list)
+
+        }
+        else setFindByNameList(tutorList)
+
+
+        if (findByCountry !== '') {
+            var list = []
+            tutorList.map((teacher) => {
+                if (teacher.country?.includes(findByCountry)) {
+                    console.log('first')
+                    list.push(teacher)
+                }
+            })
+            setFindByNameList(list)
+        }
+
+        if (findByName === '' && findByCountry === '') {
+            setFindByNameList(tutorList)
+        }
+
+    }
+
+    function resetFilter() {
+        setFindState(false);
+        setFindByName('');
+        setFindByCountry('');
+        setFilterTutorList([]);
+        setFindByNameList([]);
+    }
     useEffect(() => {
-        if (tutorListState !== undefined)
-            setFavouriteList(tutorListState.favoriteTutor)
+        if (tutorListState !== undefined) {
+            var list = [];
+            tutorListState.tutors.rows.map((teacher) => {
+                var teacherVar = new Teacher(teacher.id, teacher.name, teacher.avatar, teacher.country,
+                    teacher.phone, teacher.video, teacher.bio, teacher.education,
+                    teacher.experience, teacher.profession, teacher.targetStudent, teacher.interests,
+                    teacher.languages, teacher.specialties, teacher.rating, false, teacher.feedbacks,)
+
+                tutorListState.favoriteTutor?.map((teacher) => {
+
+                    if (teacher.secondInfo !== null) {
+                        if (teacher.secondInfo.tutorInfo.id === teacherVar.id) {
+                            teacherVar.setFavourite(true);
+                        }
+                    }
+                })
+                list.push(teacherVar);
+            })
+            list.sort((a, b) => (a.favourite < b.favourite) ? 1 : ((a.rating < b.rating) ? 1 : -1))
+            setTutorList(list)
+        }
+
     }, [tutorListState]);
 
     function tutorDetail(id, setTutorInfo) {
@@ -78,8 +154,8 @@ const Home = ({ navigation }) => {
                                 <Text style={styles.filterTitleText}>Tìm kiếm gia sư</Text>
                             </View>
                             <View style={styles.searchName}>
-                                <TextInput style={styles.input} placeholder="Nhập tên gia sư ..."></TextInput>
-                                <TextInput style={styles.input} placeholder="Chọn quốc tịch gia sư"></TextInput>
+                                <TextInput style={styles.input} value={findByName} onChangeText={(value) => setFindByName(value)} placeholder="Nhập tên gia sư ..."></TextInput>
+                                <TextInput style={styles.input} value={findByCountry} onChangeText={(value) => setFindByCountry(value)} placeholder="Chọn quốc tịch gia sư"></TextInput>
                             </View>
                             <View style={styles.filterTime}>
                                 <Text style={styles.filterTimeTitleText}>Chọn thời gian có lịch dạy trống:</Text>
@@ -88,21 +164,24 @@ const Home = ({ navigation }) => {
                                     <TextInput style={styles.input} placeholder="Giờ bắt đầu -> Giờ kết thúc"></TextInput>
                                 </View>
                                 <View style={styles.fastFilter}>
-                                    <FilterTag title='Tất cả' />
-                                    <FilterTag title='Tiếng Anh cho trẻ em' />
-                                    <FilterTag title='Tiếng Anh cho công việc' />
-                                    <FilterTag title='Giao tiếp' />
-                                    <FilterTag title='STARTERS' />
-                                    <FilterTag title='MOVERS' />
-                                    <FilterTag title='FLYERS' />
-                                    <FilterTag title='KET' />
-                                    <FilterTag title='PET' />
-                                    <FilterTag title='IELTS' />
-                                    <FilterTag title='TOEFL' />
-                                    <FilterTag title='TOEIC' />
+                                    <FilterTag title='Tất cả' onPress={() => setFilterSpecialties('')} />
+                                    <FilterTag title='Tiếng Anh cho trẻ em' onPress={() => setFilterSpecialties('english-for-kids')} />
+                                    <FilterTag title='Tiếng Anh cho công việc' onPress={() => setFilterSpecialties('business-english')} />
+                                    <FilterTag title='Giao tiếp' onPress={() => setFilterSpecialties('conversational-english')} />
+                                    <FilterTag title='STARTERS' onPress={() => setFilterSpecialties('STARTERS')} />
+                                    <FilterTag title='MOVERS' onPress={() => setFilterSpecialties('MOVERS')} />
+                                    <FilterTag title='FLYERS' onPress={() => setFilterSpecialties('FLYERS')} />
+                                    <FilterTag title='KET' onPress={() => setFilterSpecialties('ket')} />
+                                    <FilterTag title='PET' onPress={() => setFilterSpecialties('pet')} />
+                                    <FilterTag title='IELTS' onPress={() => setFilterSpecialties('ielts')} />
+                                    <FilterTag title='TOEFL' onPress={() => setFilterSpecialties('toefl')} />
+                                    <FilterTag title='TOEIC' onPress={() => setFilterSpecialties('toeic')} />
                                 </View>
-                                <TouchableOpacity style={styles.resetFilter}>
+                                <TouchableOpacity style={styles.resetFilter} onPress={resetFilter}>
                                     <Text style={styles.gotoClassButtonText}> Đặt lại bộ tìm kiếm </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={[styles.resetFilter, findState && { backgroundColor: '#0071F0' }]} onPress={searchName}>
+                                    <Text style={[styles.gotoClassButtonText, findState && { color: 'white' }]}> Tìm kiếm </Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -113,20 +192,44 @@ const Home = ({ navigation }) => {
                             </View>
                             <View>
                                 {/* {favouriteList !== undefined ?
-                                favouriteList.map((teacher) => {
-                                    if (teacher.secondInfo !== undefined)
-                                    return (
-                                        <TeacherCard key={teacher.secondInfo.id} navigation={navigation} teacher={teacher.secondInfo}></TeacherCard>
-                                    )
-                                }) : undefined
-                            } */}
-                                {tutorListState !== undefined ?
-                                    tutorListState.tutors?.rows.map((teacher) => {
-                                        return (
-                                            <TeacherCard teacherId={teacher.userId} key={teacher.id} navigation={navigation} teacher={teacher} handlePress={tutorDetail}></TeacherCard>
-                                        )
+                                    favouriteList.map((teacher) => {
+                                        if (teacher !== null)
+                                            return (
+                                                <TeacherCard key={teacher.id} teacherId={teacher.id} navigation={navigation} favourite={true} teacher={teacher}></TeacherCard>
+                                            )
                                     }) : undefined
+                                } */}
+
+                                {findState !== true ?
+                                    (tutorList !== undefined ?
+                                        tutorList.map((teacher) => {
+                                            return (
+                                                <TeacherCard favourite={teacher.favourite} teacherId={teacher.userId} key={teacher.id} navigation={navigation} teacher={teacher} handlePress={tutorDetail}></TeacherCard>
+                                            )
+                                        }) : undefined)
+                                    : (findByNameList.length !== 0? findByNameList.map((teacher) => {
+                                        return (
+                                            <TeacherCard favourite={teacher.favourite} teacherId={teacher.userId} key={teacher.id} navigation={navigation} teacher={teacher} handlePress={tutorDetail}></TeacherCard>
+                                        )
+                                    }) : 
+                                        <Text> Danh sách trống</Text>
+                                    )
                                 }
+                                {/* {filterSpecialties !== '' ?
+                                    (tutorList !== undefined ?
+                                        tutorList.map((teacher) => {
+                                            return (
+                                                <TeacherCard favourite={teacher.favourite} teacherId={teacher.userId} key={teacher.id} navigation={navigation} teacher={teacher} handlePress={tutorDetail}></TeacherCard>
+                                            )
+                                        }) : undefined)
+                                    : (filterTutorList !== undefined ?
+                                        filterTutorList.map((teacher) => {
+                                            return (
+                                                <TeacherCard favourite={teacher.favourite} teacherId={teacher.userId} key={teacher.id} navigation={navigation} teacher={teacher} handlePress={tutorDetail}></TeacherCard>
+                                            )
+                                        }) : undefined)
+                                } */}
+
 
                             </View>
 

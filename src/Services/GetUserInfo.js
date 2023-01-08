@@ -13,7 +13,7 @@ export default async function GetUserInfo(token, setUser) {
   },)
 
     .then((response) => {
-      setUser(response.data)
+      setUser(response.data.user)
       console.log('get user info success')
     })
     .catch((error) => {

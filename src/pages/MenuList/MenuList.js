@@ -43,10 +43,10 @@ const MenuList = ({ navigation }) => {
                 <ScrollView style={styles.menuItems}>
                     <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('profile')}>
                         <View style={styles.menuIcon}>
-                            <Image style={styles.avatar} alt='avatar' source={userInfo !== undefined ? {uri: userInfo.user.avatar} : avatar} resizeMode='contain'></Image>
+                            <Image style={styles.avatar} alt='avatar' source={userInfo !== undefined ? {uri: userInfo.avatar} : avatar} resizeMode='contain'></Image>
                         </View>
                         <View style={styles.menuItemTitle}>
-                            <Text style={styles.itemText}>Duc Minh</Text>
+                            <Text style={styles.itemText}>{userInfo !== undefined ? userInfo.name : 'UnNamed'}</Text>
                         </View>
                     </TouchableOpacity>
 

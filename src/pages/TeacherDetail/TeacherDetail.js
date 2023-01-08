@@ -22,61 +22,68 @@ import { AntDesign } from '@expo/vector-icons';
 
 const TeacherDetail = ({ route, navigation }) => {
     const [data, setData] = useContext(StateContext)
-    const [tutorDetailState, setTutorDetailState] = useState();
-    const { teacherId } = route.params;
-    useEffect(() => {
-        GetTutorInfo(data.access.token, teacherId, setTutorDetailState)
-    }, []);
+    const { teacher } = route.params;
+    const [listLanguage, setListLanguage] = useState([]);
+    const [listSkill, setListSkill] = useState([]);
 
-    if (tutorDetailState !== undefined) {
-        const languages = tutorDetailState.languages.split(',')
-        var listLanguage = [];
+
+    // useEffect(() => {
+    //     GetTutorInfo(data.access.token, teacherId, setTutorDetailState)
+    // }, []);
+    useEffect(() => {
+        const languages = teacher.languages.split(',')
+        var list = []
         for (const skill in languages) {
-            listLanguage.push(
+            list.push(
                 <FilterTag key={skill} title={languages[skill]} state={true} handleTouch={true} />
             )
         }
+        setListLanguage(list)
+        
+        var list2 = []
 
-        const specialties = tutorDetailState.specialties.split(',')
-        var listSkill = [];
+        const specialties = teacher.specialties.split(',')
         for (const skill in specialties) {
-            listSkill.push(
+            list2.push(
                 <FilterTag key={skill} title={specialties[skill]} state={true} handleTouch={true} />
             )
         }
-    }
+        setListSkill(list2)
+    }, []);
+
+
 
     return (
         <View style={styles.container}>
-            <Header />
-            {tutorDetailState !== undefined &&
+            <Header navigation={navigation} page="Teacher Detail" />
+            {teacher !== undefined &&
                 <ScrollView>
                     <View style={styles.content}>
                         <View style={styles.teacherInfor}>
                             <View style={styles.teacherInfor}>
-                                <Image style={styles.avatar} source={tutorDetailState.User.avatar} resizeMode='contain'></Image>
+                                <Image style={styles.avatar} source={{ uri: teacher.avatar }} resizeMode='contain'></Image>
                                 <View style={styles.teacherInforDetail}>
                                     <TouchableOpacity >
-                                        <Text style={styles.teacherName}>{tutorDetailState.User.name}</Text>
+                                        <Text style={styles.teacherName}>{teacher.name}</Text>
                                     </TouchableOpacity>
                                     <View style={styles.country}>
                                         <Image style={styles.flag} source={France} resizeMode='contain'></Image>
-                                        <Text>{tutorDetailState.User.country}</Text>
+                                        <Text>{teacher.country}</Text>
                                     </View>
                                     <View style={styles.rateTeacher}>
-                                        <Vote num={tutorDetailState.avgRating} />
-                                        <Text style={styles.numRate}>({tutorDetailState.totalFeedback})</Text>
+                                        <Vote num={teacher.rating} />
+                                        <Text style={styles.numRate}>({teacher.feedbacks.length})</Text>
                                     </View>
                                 </View>
                             </View>
 
                         </View>
 
-                        <Text style={styles.text}>{tutorDetailState.bio}</Text>
+                        <Text style={styles.text}>{teacher.bio}</Text>
 
                         <View style={styles.functionButton}>
                             <TouchableOpacity style={styles.functionGroup}>
-                                {tutorDetailState.isFavorite ?
+                                {teacher.isFavorite ?
                                     <AntDesign name="heart" size={24} color="red" /> :
                                     <AntDesign name="hearto" size={24} color="black" />
                                 }
@@ -88,12 +95,12 @@ const TeacherDetail = ({ route, navigation }) => {
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.functionGroup}>
                                 <Image style={styles.favouriteIcon} source={starUnactive} resizeMode='contain'></Image>
-                                <Text style={styles.functionText}>Đánh giá</Text>
+                                <Text style={styles.functionText}>Xem đánh giá</Text>
                             </TouchableOpacity>
                         </View>
                         <View style={styles.videoFrame}>
                             <Video
-                                source={{ uri: tutorDetailState.video }}
+                                source={{ uri: teacher.video }}
                                 useNativeControls
                                 resizeMode="contain"
                                 isLooping
@@ -116,12 +123,12 @@ const TeacherDetail = ({ route, navigation }) => {
 
                         <View style={styles.skill}>
                             <Text style={styles.title}>Sở thích</Text>
-                            <Text style={styles.text}>{tutorDetailState.interests}</Text>
+                            <Text style={styles.text}>{teacher.interests}</Text>
                         </View>
 
                         <View style={styles.skill}>
                             <Text style={styles.title}>Kinh nghiệm giảng dạy</Text>
-                            <Text style={styles.text}>{tutorDetailState.experience}</Text>
+                            <Text style={styles.text}>{teacher.experience}</Text>
                         </View>
                     </View>
                 </ScrollView>

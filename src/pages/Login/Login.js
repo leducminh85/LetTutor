@@ -11,7 +11,7 @@ import Login from "../../Services/Login";
 import RefreshToken from "../../Services/RefreshToken";
 import { StateContext, StateProvider } from "../../Context/StateContext";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import FacebookLogin from "../../Services/FacebookLogin";
 
 
 import { useEffect, useContext } from "react";
@@ -69,7 +69,7 @@ const LoginView = ({ navigation }) => {
 
         //   console.log(loginState)
         if (loginState !== undefined) {
-            if (loginState.data == undefined)
+            if (loginState.data === undefined)
                 setloginError('Tài khoản hoặc mật khẩu không đúng')
             else {
                 setData(loginState.data.tokens)
@@ -117,7 +117,7 @@ const LoginView = ({ navigation }) => {
                             <View style={styles.otherLogin}>
                                 <Text>Hoặc tiếp tục với</Text>
                                 <View style={styles.otherLoginIcons}>
-                                    <TouchableOpacity>
+                                    <TouchableOpacity onPress={()=>FacebookLogin()}>
                                         <Image style={styles.otherLoginIcon} source={facebookLogo} resizeMode='contain' />
                                     </TouchableOpacity>
                                     <TouchableOpacity>

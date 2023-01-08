@@ -7,7 +7,7 @@ export default async function GetTutorList(token, page, setTutorListState) {
 
     axios({
         method: 'GET',
-        url: baseUrl + 'tutor/more?perPage=100&page=1' ,
+        url: baseUrl + 'tutor/more?perPage=10&page=1' ,
         headers: {
             'Authorization': 'Bearer ' + token
         }, 

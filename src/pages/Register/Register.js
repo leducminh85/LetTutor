@@ -40,8 +40,8 @@ const RegisterView = ({ navigation }) => {
         else
             if (password !== rePassword) setPasswordError('Xác nhận mật khẩu không đúng')
 
-        if (emailError !== '' && passwordError !== '') {
-            console.log('first')
+        if (emailError === '' && passwordError === '') {
+            console.log('registering ...')
             Register(email, password, setRegisterState)
         }
     }
@@ -59,7 +59,7 @@ const RegisterView = ({ navigation }) => {
             if (registerState.data!== null && registerState.data.tokens !== undefined)
                 {const token = registerState.data.tokens.access.token;
                     VerifyAccount(token);
-                    navigation.navigate('home')
+                    navigation.navigate('login')
                 }
         }
     }, [registerState]);
@@ -68,7 +68,7 @@ const RegisterView = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.header}>
+            <View style={styles.header} onPress={()=> navigation.navigate('login')}>
                 <Image style={styles.logo} source={logo} resizeMode='contain'></Image>
             </View>
 
