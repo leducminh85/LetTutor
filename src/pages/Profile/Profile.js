@@ -6,9 +6,9 @@ import logo from '../../../assets/img/logo.png'
 import list from '../../../assets/img/list.png'
 import avatar from '../../../assets/img/avatar.jpg'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import User from "../../models/User"
 
-import GetUserInfo from "../../Services/GetUserInfo"
-import User from "../../modal/User"
+import GetUserInfo from "../../Services/GetUserInfo";
 
 const Profile = ({ navigation }) => {
     const [accessToken, setToken] = useState()
@@ -43,7 +43,7 @@ const Profile = ({ navigation }) => {
         }
     }, [userInfo]);
     const [showAccountInfor, setShowAccountInfor] = useState(true);
-
+   
     return (
         <View style={styles.container}>
             <Header navigation={navigation}></Header>
