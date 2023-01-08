@@ -9,7 +9,7 @@ import { StateContext, StateProvider } from "../../Context/StateContext";
 import GetTutorList from "../../Services/GetTutorList";
 import GetTutorInfo from "../../Services/GetTutorInfo";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Teacher from '../../modal/Teacher'
+import Teacher from '../../models/Teacher'
 
 const Home = ({ navigation }) => {
     // const [data, setData] = useContext(StateContext)

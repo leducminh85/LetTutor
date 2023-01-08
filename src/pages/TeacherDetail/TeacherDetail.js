@@ -26,10 +26,6 @@ const TeacherDetail = ({ route, navigation }) => {
     const [listLanguage, setListLanguage] = useState([]);
     const [listSkill, setListSkill] = useState([]);
 
-
-    // useEffect(() => {
-    //     GetTutorInfo(data.access.token, teacherId, setTutorDetailState)
-    // }, []);
     useEffect(() => {
         const languages = teacher.languages.split(',')
         var list = []

@@ -7,8 +7,10 @@ import list from '../../../assets/img/list.png'
 import avatar from '../../../assets/img/avatar.jpg'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import User from "../../models/User"
+import UserEdit from "../../models/UserEdit"
 
 import GetUserInfo from "../../Services/GetUserInfo";
+import UpdateUserInfo from "../../Services/UpdateUserInfo";
 
 const Profile = ({ navigation }) => {
     const [accessToken, setToken] = useState()
@@ -37,13 +39,16 @@ const Profile = ({ navigation }) => {
     useEffect(() => {
         if (userInfo !== undefined) {
             var userTemp = new User(userInfo.id, userInfo.name, userInfo.avatar, userInfo.country,
-                userInfo.phone, userInfo.email, userInfo.birthday, userInfo.level, userInfo.learnTopic)
+                userInfo.phone, userInfo.birthday, userInfo.level, userInfo.learnTopic)
            // setUser(userTemp)
            user = userTemp
         }
     }, [userInfo]);
     const [showAccountInfor, setShowAccountInfor] = useState(true);
-   
+    async function editProfileSubmit() {
+       var userTemp = new UserEdit(user.name, user.avatar, user.country, user.phone, user.email, user.birthday, user.level)
+       UpdateUserInfo(accessToken, userTemp)
+    }
     return (
         <View style={styles.container}>
             <Header navigation={navigation}></Header>
@@ -106,7 +111,7 @@ const Profile = ({ navigation }) => {
                             <TextInput style={[styles.input, styles.timeTable]} multiline={true} placeholder=" Ghi chú thời gian mà bạn muốn học trong tuần"></TextInput>
                         </View>
 
-                        <TouchableOpacity style={styles.confirmButton}>
+                        <TouchableOpacity style={styles.confirmButton} onPress={editProfileSubmit}>
                             <Text style={styles.confirmButtonText}> Lưu thay đổi </Text>
                         </TouchableOpacity>
                     </View>
