@@ -40,7 +40,7 @@ const RegisterView = ({ navigation }) => {
         else
             if (password !== rePassword) setPasswordError('Xác nhận mật khẩu không đúng')
 
-        if (emailError === '' && passwordError === '') {
+        if (emailError !== '' && passwordError !== '') {
             console.log('first')
             Register(email, password, setRegisterState)
         }
@@ -56,7 +56,7 @@ const RegisterView = ({ navigation }) => {
                 if (registerState.data.message === '\"password\" length must be at least 6 characters long')
                     setPasswordError('Mật khẩu ít nhất 6 ký tự')
             
-            if (registerState.data!== null && registerState.data.tokens === undefined)
+            if (registerState.data!== null && registerState.data.tokens !== undefined)
                 {const token = registerState.data.tokens.access.token;
                     VerifyAccount(token);
                     navigation.navigate('home')

@@ -8,8 +8,8 @@ import googleLogo from '../../../assets/img/googleLogo.png'
 import mobileLogo from '../../../assets/img/mobileLogo.png'
 
 import Login from "../../Services/Login";
+import RefreshToken from "../../Services/RefreshToken";
 import { StateContext, StateProvider } from "../../Context/StateContext";
-import deviceStorage from '../../Services/DeviceStorage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
@@ -26,23 +26,24 @@ const LoginView = ({ navigation }) => {
     const [loginState, setLoginState] = useState();
     const [passwordVisible, setPasswordVisible] = useState(true);
 
-    const [data, setData] = useContext(StateContext)
+    const [data, setData] = useState()
 
-    useEffect(() => {
+    const Boiler = async () => {
         try {
-            const value = AsyncStorage.getItem('token');
-
-            if (value !== null) {
-                // We have data!!
-                //console.log(value != null ? JSON.parse(value) : null)
-                console.log(JSON.parse(value))
-                setData({ "tokens": JSON.parse(value) })
+            const token = await AsyncStorage.getItem("token")
+            if (token !== null) {
+                if (Date.parse(JSON.parse(token).access.expires) < Date.now())
+                    RefreshToken(JSON.parse(token))
+                setData(token)
                 navigation.navigate('home')
             }
         } catch (error) {
-            // Error retrieving data
             console.log(error)
         }
+    }
+
+    useEffect(() => {
+        Boiler();
     }, []);
     async function loginForm() {
         setemailError('')
@@ -57,8 +58,10 @@ const LoginView = ({ navigation }) => {
         if (password === '') setPasswordError('Mật khẩu không được để trống')
 
 
-        if (emailError === '' && passwordError === '') {
-            (Login(email, password, setLoginState))
+        if (emailError === '' && passwordError === '' && email !== '' && password !== '') {
+            console.log(email)
+            console.log('login')
+            Login(email, password, setLoginState)
         }
     }
 

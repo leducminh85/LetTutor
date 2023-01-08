@@ -42,7 +42,7 @@ const ForgotPasswordView = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <Image style={styles.logo} source={logo} resizeMode='contain'></Image>
+                <Image style={styles.logo} source={logo} onPress={()=>navigation.navigate('login')} resizeMode='contain'></Image>
             </View>
 
             <View style={styles.authentication}>

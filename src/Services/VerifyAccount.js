@@ -7,7 +7,7 @@ export default async function VerifyAccount(token) {
 
     axios({
         method: 'GET',
-        url: baseUrl + 'auth/verifyAccount?token=' + 'token',
+        url: baseUrl + 'auth/verifyAccount?token=' + token,
 
     },).then( (response) => {
         console.log('success') 

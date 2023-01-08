@@ -2,14 +2,37 @@ import { Image, StyleSheet, Text, SafeAreaView, View, TouchableOpacity, ScrollVi
 
 import { MaterialIcons, MaterialCommunityIcons, FontAwesome5, Entypo, FontAwesome } from '@expo/vector-icons';
 import { StateContext, StateProvider } from "../../Context/StateContext";
-import {useContext} from 'react'
+import { useContext, useState, useEffect } from 'react'
 import Header from "../../component/Header";
+import GetUserInfo from '../../Services/GetUserInfo';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ICONSIZE = 30
 const COLOR = '#0071F0'
 
 const MenuList = ({ navigation }) => {
-    const [data, setData] = useContext(StateContext)
+    const [accessToken, setToken] = useState()
+    const [userInfo,setUser] = useState()
+
+    const Boiler = async () => {
+        try {
+            const token = await AsyncStorage.getItem("token")
+            if (token !== undefined) {
+                setToken(JSON.parse(token).access.token)
+                //console.log(JSON.parse(token).access.token)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    useEffect(() => {
+        Boiler();
+    }, []);
+
+    useEffect(() => {
+        if (accessToken !== undefined)
+            GetUserInfo(accessToken, setUser)
+    }, [accessToken]);
 
     return (
         <StateProvider>
@@ -18,7 +41,7 @@ const MenuList = ({ navigation }) => {
                 <ScrollView style={styles.menuItems}>
                     <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('profile')}>
                         <View style={styles.menuIcon}>
-                            <Image style={styles.avatar} source={data.user.avatar} resizeMode='contain'></Image>
+                            <Image style={styles.avatar} source={userInfo !== undefined ? userInfo.user.avatar : ''} resizeMode='contain'></Image>
                         </View>
                         <View style={styles.menuItemTitle}>
                             <Text style={styles.itemText}>Duc Minh</Text>

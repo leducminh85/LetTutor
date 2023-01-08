@@ -8,86 +8,106 @@ import { StateContext, StateProvider } from "../../Context/StateContext";
 
 import GetTutorList from "../../Services/GetTutorList";
 import GetTutorInfo from "../../Services/GetTutorInfo";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Home = ({ navigation }) => {
-    const [data, setData] = useContext(StateContext)
+    const [data, setData] = useState()
     const [tutorListState, setTutorListState] = useState()
     const [favouriteList, setFavouriteList] = useState()
 
+    const Boiler = async () => {
+        try {
+            const token = await AsyncStorage.getItem("token")
+            if (token !== null) {
+                setData(JSON.parse(token))
+                //console.log(JSON.parse(token).access.token)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
     useEffect(() => {
-        GetTutorList(data.access.token, 1, setTutorListState)
+        Boiler();
+
     }, []);
+
+    useEffect(() => {
+        console.log(data)
+        if (data !== undefined)
+            GetTutorList('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjYjllN2RlYi0zMzgyLTQ4ZGItYjA3Yy05MGFjZjUyZjU0MWMiLCJpYXQiOjE2NzMxMzE4MTIsImV4cCI6MTY3MzIxODIxMiwidHlwZSI6ImFjY2VzcyJ9.3-J5YK6aNpUFig2zB-DMPjXDnOgA6d8-oF4EgJsUV-g', 1, setTutorListState)
+    }, [data]);
 
     useEffect(() => {
         if (tutorListState !== undefined)
             setFavouriteList(tutorListState.favoriteTutor)
     }, [tutorListState]);
 
-    function tutorDetail(id, setTutorInfo){
-        GetTutorInfo(data.access.token, id, setTutorInfo)
+    function tutorDetail(id, setTutorInfo) {
+        if (data != null) GetTutorInfo(data.access.token, id, setTutorInfo)
     }
 
     return (
-        <View style={styles.container}>
-            <Header navigation={navigation} page={'home'} />
-            <ScrollView>
-                <View style={styles.notification}>
-                    <View style={styles.notiTitle}>
-                        <Text style={styles.notiText}> Buổi học đang diễn ra</Text>
-                    </View>
-                    <View style={styles.timeArea}>
-                        <View style={styles.classTime}>
-                            <Text style={styles.timeText}>CN, 23 thg 10 22 11:00 - 11:25</Text>
-                            <Text style={styles.timeLeft}> (giờ học 00:20:14)</Text>
+        <StateProvider>
+            <View style={styles.container}>
+                <Header navigation={navigation} page={'home'} />
+                <ScrollView>
+                    <View style={styles.notification}>
+                        <View style={styles.notiTitle}>
+                            <Text style={styles.notiText}> Buổi học đang diễn ra</Text>
                         </View>
-                        <TouchableOpacity style={styles.gotoClassButton}>
-                            <Text style={styles.gotoClassButtonText}> Vào lớp học </Text>
-                        </TouchableOpacity>
-                    </View>
-                    <Text style={styles.timeText}>Tổng số giờ bạn đã học là: 159 giờ 10 phút</Text>
-                </View>
-
-                <View style={styles.content}>
-                    <View>
-                        <View style={styles.filterTitle}>
-                            <Text style={styles.filterTitleText}>Tìm kiếm gia sư</Text>
-                        </View>
-                        <View style={styles.searchName}>
-                            <TextInput style={styles.input} placeholder="Nhập tên gia sư ..."></TextInput>
-                            <TextInput style={styles.input} placeholder="Chọn quốc tịch gia sư"></TextInput>
-                        </View>
-                        <View style={styles.filterTime}>
-                            <Text style={styles.filterTimeTitleText}>Chọn thời gian có lịch dạy trống:</Text>
-                            <View style={styles.searchName}>
-                                <TextInput style={styles.input} placeholder="Chọn một ngày"></TextInput>
-                                <TextInput style={styles.input} placeholder="Giờ bắt đầu -> Giờ kết thúc"></TextInput>
+                        <View style={styles.timeArea}>
+                            <View style={styles.classTime}>
+                                <Text style={styles.timeText}>CN, 23 thg 10 22 11:00 - 11:25</Text>
+                                <Text style={styles.timeLeft}> (giờ học 00:20:14)</Text>
                             </View>
-                            <View style={styles.fastFilter}>
-                                <FilterTag title='Tất cả' />
-                                <FilterTag title='Tiếng Anh cho trẻ em' />
-                                <FilterTag title='Tiếng Anh cho công việc' />
-                                <FilterTag title='Giao tiếp' />
-                                <FilterTag title='STARTERS' />
-                                <FilterTag title='MOVERS' />
-                                <FilterTag title='FLYERS' />
-                                <FilterTag title='KET' />
-                                <FilterTag title='PET' />
-                                <FilterTag title='IELTS' />
-                                <FilterTag title='TOEFL' />
-                                <FilterTag title='TOEIC' />
-                            </View>
-                            <TouchableOpacity style={styles.resetFilter}>
-                                <Text style={styles.gotoClassButtonText}> Đặt lại bộ tìm kiếm </Text>
+                            <TouchableOpacity style={styles.gotoClassButton}>
+                                <Text style={styles.gotoClassButtonText}> Vào lớp học </Text>
                             </TouchableOpacity>
                         </View>
+                        <Text style={styles.timeText}>Tổng số giờ bạn đã học là: 159 giờ 10 phút</Text>
                     </View>
 
-                    <View>
-                        <View style={styles.filterTitle}>
-                            <Text style={styles.filterTitleText}>Gia sư được đề xuất</Text>
-                        </View>
+                    <View style={styles.content}>
                         <View>
-                            {/* {favouriteList !== undefined ?
+                            <View style={styles.filterTitle}>
+                                <Text style={styles.filterTitleText}>Tìm kiếm gia sư</Text>
+                            </View>
+                            <View style={styles.searchName}>
+                                <TextInput style={styles.input} placeholder="Nhập tên gia sư ..."></TextInput>
+                                <TextInput style={styles.input} placeholder="Chọn quốc tịch gia sư"></TextInput>
+                            </View>
+                            <View style={styles.filterTime}>
+                                <Text style={styles.filterTimeTitleText}>Chọn thời gian có lịch dạy trống:</Text>
+                                <View style={styles.searchName}>
+                                    <TextInput style={styles.input} placeholder="Chọn một ngày"></TextInput>
+                                    <TextInput style={styles.input} placeholder="Giờ bắt đầu -> Giờ kết thúc"></TextInput>
+                                </View>
+                                <View style={styles.fastFilter}>
+                                    <FilterTag title='Tất cả' />
+                                    <FilterTag title='Tiếng Anh cho trẻ em' />
+                                    <FilterTag title='Tiếng Anh cho công việc' />
+                                    <FilterTag title='Giao tiếp' />
+                                    <FilterTag title='STARTERS' />
+                                    <FilterTag title='MOVERS' />
+                                    <FilterTag title='FLYERS' />
+                                    <FilterTag title='KET' />
+                                    <FilterTag title='PET' />
+                                    <FilterTag title='IELTS' />
+                                    <FilterTag title='TOEFL' />
+                                    <FilterTag title='TOEIC' />
+                                </View>
+                                <TouchableOpacity style={styles.resetFilter}>
+                                    <Text style={styles.gotoClassButtonText}> Đặt lại bộ tìm kiếm </Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+
+                        <View>
+                            <View style={styles.filterTitle}>
+                                <Text style={styles.filterTitleText}>Gia sư được đề xuất</Text>
+                            </View>
+                            <View>
+                                {/* {favouriteList !== undefined ?
                                 favouriteList.map((teacher) => {
                                     if (teacher.secondInfo !== undefined)
                                     return (
@@ -95,23 +115,24 @@ const Home = ({ navigation }) => {
                                     )
                                 }) : undefined
                             } */}
-                            {tutorListState !== undefined ?
-                                tutorListState.tutors.rows.map((teacher) => {
-                                    return (
-                                        <TeacherCard teacherId={teacher.userId} key={teacher.id} navigation={navigation} teacher={teacher} handlePress={tutorDetail}></TeacherCard>
-                                    )
-                                }) : undefined
-                            }
+                                {tutorListState !== undefined ?
+                                    tutorListState.tutors?.rows.map((teacher) => {
+                                        return (
+                                            <TeacherCard teacherId={teacher.userId} key={teacher.id} navigation={navigation} teacher={teacher} handlePress={tutorDetail}></TeacherCard>
+                                        )
+                                    }) : undefined
+                                }
+
+                            </View>
 
                         </View>
-
                     </View>
-                </View>
 
-            </ScrollView>
+                </ScrollView>
 
 
-        </View >
+            </View >
+        </StateProvider>
     );
 }
 
