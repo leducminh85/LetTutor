@@ -24,7 +24,7 @@ const TeacherCard = ({ navigation, teacher, teacherId, handlePress }) => {
         <View style={styles.container}>
             <View style={styles.teacherInfor}>
                 <View style={styles.teacherInfor}>
-                    <Image style={styles.avatar} source={/*teacher.*/avatar} alt={'avatar'} resizeMode='contain'></Image>
+                    <Image style={styles.avatar} source={teacher.avatar !== '' ? {uri: teacher.avatar}: avatar} alt={'avatar'} resizeMode='contain'></Image>
                     <View style={styles.teacherInforDetail}>
                         <TouchableOpacity onPress={async () => {
                             navigation.navigate('teacherDetail', {teacherId: teacherId})}

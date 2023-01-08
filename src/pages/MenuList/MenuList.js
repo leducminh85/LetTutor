@@ -6,13 +6,15 @@ import { useContext, useState, useEffect } from 'react'
 import Header from "../../component/Header";
 import GetUserInfo from '../../Services/GetUserInfo';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Logout from '../../Services/Logout';
+import avatar from '../../../assets/img/avatar.jpg'
 
 const ICONSIZE = 30
 const COLOR = '#0071F0'
 
 const MenuList = ({ navigation }) => {
     const [accessToken, setToken] = useState()
-    const [userInfo,setUser] = useState()
+    const [userInfo, setUser] = useState()
 
     const Boiler = async () => {
         try {
@@ -41,7 +43,7 @@ const MenuList = ({ navigation }) => {
                 <ScrollView style={styles.menuItems}>
                     <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('profile')}>
                         <View style={styles.menuIcon}>
-                            <Image style={styles.avatar} source={userInfo !== undefined ? userInfo.user.avatar : ''} resizeMode='contain'></Image>
+                            <Image style={styles.avatar} alt='avatar' source={userInfo !== undefined ? {uri: userInfo.user.avatar} : avatar} resizeMode='contain'></Image>
                         </View>
                         <View style={styles.menuItemTitle}>
                             <Text style={styles.itemText}>Duc Minh</Text>
@@ -120,7 +122,7 @@ const MenuList = ({ navigation }) => {
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.menuItem}>
+                    <TouchableOpacity style={styles.menuItem} onPress={() => { Logout(); navigation.navigate('login') }}>
                         <View style={styles.menuIcon}>
                             <MaterialIcons name="logout" size={ICONSIZE} color={COLOR} />
                         </View>

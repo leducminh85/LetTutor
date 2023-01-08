@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default async function Login( email, password, setLoginState) {
+    console.log(email, password)
     axios({
         method: 'POST',
         url: baseUrl + 'auth/login',
@@ -13,16 +14,17 @@ export default async function Login( email, password, setLoginState) {
         }
 
     },)
-    .then(res=>res.json())
+    // .then(res=>res.json())
     .then( async (response) => {
         try {
-            await AsyncStorage.setItem('token',response.data.tokens)
+            await AsyncStorage.setItem('token',JSON.stringify(response.data.tokens))
 
             console.log(response.data.tokens)
             console.log('save token')
           } catch (error) {
             // Error saving data
             console.log(error)
+
           }
 
         console.log('login success') 
@@ -32,7 +34,8 @@ export default async function Login( email, password, setLoginState) {
     })
         .catch(function (error) {
             // handle error
-            console.log('error') 
+            console.log('error login')
+            console.log(error) 
             setLoginState(error)
 
         })

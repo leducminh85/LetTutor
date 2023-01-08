@@ -13,8 +13,8 @@ export default async function GetUserInfo(token, setUser) {
   },)
 
     .then((response) => {
-      console.log(response.data)
       setUser(response.data)
+      console.log('get user info success')
     })
     .catch((error) => {
       // handle error

@@ -26,7 +26,7 @@ const LoginView = ({ navigation }) => {
     const [loginState, setLoginState] = useState();
     const [passwordVisible, setPasswordVisible] = useState(true);
 
-    const [data, setData] = useState()
+    const [data, setData] = useContext(StateContext)
 
     const Boiler = async () => {
         try {

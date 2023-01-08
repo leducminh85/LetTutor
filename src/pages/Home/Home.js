@@ -11,7 +11,10 @@ import GetTutorInfo from "../../Services/GetTutorInfo";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Home = ({ navigation }) => {
-    const [data, setData] = useState()
+   // const [data, setData] = useContext(StateContext)
+    const [accessToken, setAccesToken] = useState()//useContext(StateContext)
+   const [data, setData] = useContext(StateContext)
+
     const [tutorListState, setTutorListState] = useState()
     const [favouriteList, setFavouriteList] = useState()
 
@@ -19,7 +22,9 @@ const Home = ({ navigation }) => {
         try {
             const token = await AsyncStorage.getItem("token")
             if (token !== null) {
+                setAccesToken(JSON.parse(token))
                 setData(JSON.parse(token))
+
                 //console.log(JSON.parse(token).access.token)
             }
         } catch (error) {
@@ -32,10 +37,10 @@ const Home = ({ navigation }) => {
     }, []);
 
     useEffect(() => {
-        console.log(data)
-        if (data !== undefined)
-            GetTutorList('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjYjllN2RlYi0zMzgyLTQ4ZGItYjA3Yy05MGFjZjUyZjU0MWMiLCJpYXQiOjE2NzMxMzE4MTIsImV4cCI6MTY3MzIxODIxMiwidHlwZSI6ImFjY2VzcyJ9.3-J5YK6aNpUFig2zB-DMPjXDnOgA6d8-oF4EgJsUV-g', 1, setTutorListState)
-    }, [data]);
+        console.log(accessToken)
+        if (accessToken !== undefined)
+            GetTutorList(accessToken.access.token, 1, setTutorListState)
+    }, [accessToken]);
 
     useEffect(() => {
         if (tutorListState !== undefined)
@@ -43,7 +48,7 @@ const Home = ({ navigation }) => {
     }, [tutorListState]);
 
     function tutorDetail(id, setTutorInfo) {
-        if (data != null) GetTutorInfo(data.access.token, id, setTutorInfo)
+        if (accessToken !== undefined) GetTutorInfo(accessToken.access.token, id, setTutorInfo)
     }
 
     return (
