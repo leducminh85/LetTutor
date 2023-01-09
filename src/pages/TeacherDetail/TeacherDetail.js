@@ -79,7 +79,7 @@ const TeacherDetail = ({ route, navigation }) => {
 
                         <View style={styles.functionButton}>
                             <TouchableOpacity style={styles.functionGroup}>
-                                {teacher.isFavorite ?
+                                {teacher.favourite ?
                                     <AntDesign name="heart" size={24} color="red" /> :
                                     <AntDesign name="hearto" size={24} color="black" />
                                 }

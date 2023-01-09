@@ -1,4 +1,4 @@
-package com.d.minh.LetTutor.newarchitecture;
+package com.lettutor.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -20,9 +20,9 @@ import com.facebook.react.fabric.EmptyReactNativeConfig;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.fabric.ReactNativeConfig;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.d.minh.LetTutor.BuildConfig;
-import com.d.minh.LetTutor.newarchitecture.components.MainComponentsRegistry;
-import com.d.minh.LetTutor.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.lettutor.BuildConfig;
+import com.lettutor.newarchitecture.components.MainComponentsRegistry;
+import com.lettutor.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 

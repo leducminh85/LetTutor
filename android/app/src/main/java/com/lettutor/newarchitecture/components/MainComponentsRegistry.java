@@ -1,4 +1,4 @@
-package com.d.minh.LetTutor.newarchitecture.components;
+package com.lettutor.newarchitecture.components;
 
 import com.facebook.jni.HybridData;
 import com.facebook.proguard.annotations.DoNotStrip;

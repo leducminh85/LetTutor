@@ -40,14 +40,14 @@ const Profile = ({ navigation }) => {
         if (userInfo !== undefined) {
             var userTemp = new User(userInfo.id, userInfo.name, userInfo.avatar, userInfo.country,
                 userInfo.phone, userInfo.birthday, userInfo.level, userInfo.learnTopic)
-           // setUser(userTemp)
-           user = userTemp
+            // setUser(userTemp)
+            user = userTemp
         }
     }, [userInfo]);
     const [showAccountInfor, setShowAccountInfor] = useState(true);
     async function editProfileSubmit() {
-       var userTemp = new UserEdit(user.name, user.avatar, user.country, user.phone, user.email, user.birthday, user.level)
-       UpdateUserInfo(accessToken, userTemp)
+        var userTemp = new UserEdit(user.name, user.avatar, user.country, user.phone, user.email, user.birthday, user.level)
+        UpdateUserInfo(accessToken, userTemp)
     }
     return (
         <View style={styles.container}>
@@ -78,27 +78,38 @@ const Profile = ({ navigation }) => {
 
                         <View style={styles.tag}>
                             <Text style={styles.label}>Địa chỉ email</Text>
-                            <TextInput style={styles.input} defaultValue={userInfo !== undefined ? userInfo.email : ''}></TextInput>
+                            <TextInput style={styles.input} defaultValue={userInfo !== undefined ? userInfo.email : ''}
+                                onChangeText={(value) => user.setEmail(value)}
+                            ></TextInput>
                         </View>
 
                         <View style={styles.tag}>
                             <Text style={styles.label}><Text style={{ color: 'red' }}>*</Text>Quốc gia</Text>
-                            <TextInput style={styles.input} defaultValue={userInfo !== undefined ? userInfo.country : ''}></TextInput>
+                            <TextInput style={styles.input} defaultValue={userInfo !== undefined ? userInfo.country : ''}
+                                onChangeText={(value) => user.setCountry(value)}
+                            ></TextInput>
                         </View>
 
                         <View style={styles.tag}>
                             <Text style={styles.label}><Text style={{ color: 'red' }}>*</Text>Số điện thoại</Text>
-                            <TextInput style={styles.input} defaultValue={userInfo !== undefined ? userInfo.phone : ''}></TextInput>
+                            <TextInput style={styles.input} defaultValue={userInfo !== undefined ? userInfo.phone : ''}
+                                onChangeText={(value) => user.setPhone(value)}
+
+                            ></TextInput>
                         </View>
 
                         <View style={styles.tag}>
                             <Text style={styles.label}><Text style={{ color: 'red' }}>*</Text>Ngày sinh</Text>
-                            <TextInput style={styles.input} defaultValue={userInfo !== undefined ? userInfo.birthday : ''}></TextInput>
+                            <TextInput style={styles.input} defaultValue={userInfo !== undefined ? userInfo.birthday : ''}
+                                onChangeText={(value) => user.setBirthday(value)}
+                            ></TextInput>
                         </View>
 
                         <View style={styles.tag}>
                             <Text style={styles.label}><Text style={{ color: 'red' }}>*</Text>Trình độ</Text>
-                            <TextInput style={styles.input} defaultValue={userInfo !== undefined ? userInfo.level : ''}></TextInput>
+                            <TextInput style={styles.input} defaultValue={userInfo !== undefined ? userInfo.level : ''}
+                                onChangeText={(value) => user.setLevel(value)}
+                            ></TextInput>
                         </View>
 
                         <View style={styles.tag}>

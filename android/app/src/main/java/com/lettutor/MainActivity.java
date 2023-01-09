@@ -1,4 +1,4 @@
-package com.d.minh.LetTutor;
+package com.lettutor;
 
 import android.os.Build;
 import android.os.Bundle;

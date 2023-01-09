@@ -1,4 +1,4 @@
-package com.d.minh.LetTutor.newarchitecture.modules;
+package com.lettutor.newarchitecture.modules;
 
 import com.facebook.jni.HybridData;
 import com.facebook.react.ReactPackage;
